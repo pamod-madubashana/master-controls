@@ -1,0 +1,4 @@
+﻿aiohttp-jinja2==1.6
+pip==25.0.1
+pyrofork==2.3.68
+requests==2.32.4

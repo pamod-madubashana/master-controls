@@ -1,0 +1,9 @@
+
+#verifyIcon{
+    background: url("../Src/Icons/verify.png");
+}
+
+#verifyIcon , #securityIcon , #autoResponseIcon{
+    background-size: 52px 52px;
+    background-repeat: no-repeat;
+}
