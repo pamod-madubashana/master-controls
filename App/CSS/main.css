@@ -69,6 +69,7 @@ html, body {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
+  display: none; /* Initially hidden */
 }
 .main-container.left {
   transform: translateX(-170%) translateY(0) scale(1.2);
