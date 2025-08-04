@@ -21,18 +21,19 @@
     background-size: cover;
 }
 
-.popup{
+
+.verify-popups{
     position: absolute;
     width: 90vw;
     height: 70vh;
     background: #ffffff36;
     top: 12%;
     left: 50%;
-    transform: translate(-50%);
+    /* transform: translate(150%,-50%) scale(0.1); */
+    transform: translate(-50%,150%) scale(0.1);
     border-radius: 24px;
 }
-
-.popup::before{
+.verify-popups::before{
     position: absolute;
     content: "";
     width: calc(100% - 40px);
@@ -42,4 +43,88 @@
     left: 50%;
     border-radius: 22px;
     transform: translate(-50%, -50%);
+}
+
+.verify-popups.active{
+    transform: translate(-50%) scale(1);
+    /* transform: translate(-180%,-30%) scale(0.1); */
+}
+
+.back-to-home{
+    position: absolute;
+    top: 55px;
+    left: 40px;
+    width: 30px;
+    height: 5px;
+    background: #ffffff;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.back-to-home::after{
+    position: absolute;
+    content: "";
+    width: 15px;
+    height: 5px;
+    background: #ffffff;
+    top: -4px;
+    left: -4px;
+    transform: rotate(-45deg);
+}
+
+.back-to-home::before{
+    position: absolute;
+    content: "";
+    width: 15px;
+    height: 5px;
+    background: #ffffff;
+    top: 4px;
+    left: -4px;
+    transform: rotate(45deg);
+}
+
+.title{
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    opacity: 0.5;
+}
+
+.veryfy-switch{
+    position: absolute;
+    top: 45px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    background: #ffffff36;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    transition: 0.4s ease;
+}
+
+.veryfy-switch::before{
+    position: absolute;
+    content: "";
+    width: 30px;
+    height: 30px;
+    background: #11cf2e;
+    border-radius: 50%;
+    left: 0;
+    transition: 0.4s ease;
+}
+
+.veryfy-switch.active::before {
+    left: 20px;
+    transition: 0.4s ease;
+
+}
+.veryfy-switch.active {
+    background: #00ff2671;
 }

@@ -65,3 +65,5 @@ icons.forEach((icon, i) => {
     updatePositionByIndex(currentIndex);
   });
 });
+
+
