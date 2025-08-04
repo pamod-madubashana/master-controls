@@ -3,6 +3,10 @@ const verifyIcon = document.getElementById('verifyIcon');
 const HomeContainer = document.getElementById("homeContainer")
 const VerifyPopup = document.getElementById("verifyPopup");
 const backToHome = document.getElementById('backToHome');
+const groupDropdownIcon = document.getElementById('groupDropdown');
+const pmDropdownIcon = document.getElementById('pmDropdown');
+const pmDropdown = document.querySelector('.categories.pm');
+const groupDropdown = document.querySelector('.categories.group');
 
 verifySwitch.addEventListener('click', () => {
     if (verifySwitch.classList.contains('active')) {
@@ -25,3 +29,14 @@ backToHome.addEventListener('click', () => {
     HomeContainer.classList.add('center');
     VerifyPopup.classList.remove('active');
 });
+
+
+function setupDropdownToggle(iconElement, dropdownElement) {
+    iconElement.addEventListener('click', () => {
+        console.log(`${iconElement.id} clicked`);
+        dropdownElement.classList.toggle('active');
+    });
+}
+
+setupDropdownToggle(groupDropdownIcon, document.querySelector('.categories.group'));
+setupDropdownToggle(pmDropdownIcon, document.querySelector('.categories.pm'));
