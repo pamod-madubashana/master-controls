@@ -25,20 +25,28 @@
   </div>
   <div class="popup">
     <div class="verify-popups" id="verifyPopup">
-      <div class="popup-content" id="VerifyContent">
-        <div class="back-to-home" id="backToHome"></div>
-        <div class="title">Verify</div>
-        <div class="veryfy-switch", id="verifySwitch"></div>
-        <div class="contents">
-          <div class="categories group" id="groups">
-            <div class="category-name group">In Group Chats</div>
-            <div class="category-description group">Verify new member in group chat</div>
-            <div class="dropdown" id="groupDropdown"><div class="drop"></div></div>
+      <div class="outline">
+        <div class="header verify">
+          <div class="popup-content" id="VerifyContent">
+            <div class="back-to-home" id="backToHome"><div class="arrow"></div></div>
+            <div class="title">Verify</div>
+            <div class="veryfy-switch", id="verifySwitch"></div>
           </div>
-          <div class="categories pm" id="pm">
-            <div class="category-name pm">In Private Chats</div>
-            <div class="category-description pm"></div>
-            <div class="dropdown" id="pmDropdown"><div class="drop"></div></div>
+          <div class="contents">
+            <div class="categories group" id="groups">
+              <div class="category-name group">In Group Chats</div>
+              <div class="category-description group">Verify new member in group chat</div>
+              <div class="dropdown" id="groupDropdown"><div class="drop"></div></div>
+              <div class="preview">
+                <div class="msg">Verify message here !</div>
+                <div class="button">Verify</div>
+              </div>
+            </div>
+            <div class="categories pm" id="pm">
+              <div class="category-name pm">In Private Chats</div>
+              <div class="category-description pm"></div>
+              <div class="dropdown" id="pmDropdown"><div class="drop"></div></div>
+            </div>
           </div>
         </div>
       </div>
@@ -50,7 +58,7 @@
       <div class="popup-content"></div>
     </div>
   </div>
-  <div class="dock">
+  <div class="dock" id="dock">
     <div class="icon" id="userIcon"></div>
     <div class="icon active" id="homeIcon"></div>
     <div class="icon" id="settingsIcon"></div>

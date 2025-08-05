@@ -7,6 +7,7 @@ const groupDropdownIcon = document.getElementById('groupDropdown');
 const pmDropdownIcon = document.getElementById('pmDropdown');
 const pmDropdown = document.querySelector('.categories.pm');
 const groupDropdown = document.querySelector('.categories.group');
+const Dock = document.getElementById('dock');
 
 verifySwitch.addEventListener('click', () => {
     if (verifySwitch.classList.contains('active')) {
@@ -21,6 +22,7 @@ verifyIcon.addEventListener('click', () => {
         HomeContainer.classList.remove('center');
         HomeContainer.classList.add('down');
         VerifyPopup.classList.add('active');
+        Dock.classList.add('hide');
     }
 });
 
@@ -28,6 +30,7 @@ backToHome.addEventListener('click', () => {
     HomeContainer.classList.remove('down');
     HomeContainer.classList.add('center');
     VerifyPopup.classList.remove('active');
+    Dock.classList.remove('hide');
 });
 
 

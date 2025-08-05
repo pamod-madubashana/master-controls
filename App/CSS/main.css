@@ -55,8 +55,8 @@ html, body {
   top: 15%;
   left: 50%;
   transform: translate(-50%);
-  width: 360px;
-  height: 538px;
+  width: calc(100% - 40px);
+  height: calc(70% - 40px);
   background: #ffffff36;
   opacity: 10%;
   border-radius: 21px;
@@ -137,13 +137,20 @@ html, body {
 
 .dock{
   position: absolute;
-  top: 85%;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
   width: 60vw;
   display: flex;
   justify-content: center;
   gap: 40px;
+  transition: 0.5s ease;
+  /* opacity: 100%; */
+}
+.dock.hide{
+  transform: translateX(-50%) translateY(100px) scale(0.1);
+  transition: 0.5s ease;
+  /* opacity: 0; */
 }
 .icon{
   width: 30px;

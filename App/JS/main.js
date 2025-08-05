@@ -14,11 +14,8 @@ const containers = {
 const icons = iconIDs.map(id => document.getElementById(id));
 
 function updatePositionByIndex(index) {
-  // Set active icon
   icons.forEach(i => i.classList.remove('active'));
   document.getElementById(iconIDs[index]).classList.add('active');
-
-  // Reset all positions
   Object.values(containers).forEach(c => c.classList.remove('left', 'center', 'right'));
 
   if (index === 0) {
@@ -45,12 +42,10 @@ containerWrapper.addEventListener('touchend', e => {
   const diff = startX - endX;
 
   if (Math.abs(diff) > 50) {
-    // Swipe left
     if (diff > 0 && currentIndex < 2) {
       currentIndex++;
       updatePositionByIndex(currentIndex);
     }
-    // Swipe right
     if (diff < 0 && currentIndex > 0) {
       currentIndex--;
       updatePositionByIndex(currentIndex);
@@ -58,7 +53,6 @@ containerWrapper.addEventListener('touchend', e => {
   }
 });
 
-// Also update on icon click:
 icons.forEach((icon, i) => {
   icon.addEventListener('click', () => {
     currentIndex = i;
