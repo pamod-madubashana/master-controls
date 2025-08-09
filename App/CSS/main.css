@@ -56,3 +56,16 @@
   height: 70vh; /* match your Home slide height */
   backdrop-filter: blur(20px);
 }
+
+/* Starting state: icons are translated down & scaled down */
+.app-icon {
+  transform: translateY(400px) scale(0.5);
+  opacity: 0;
+  transition: transform 5s ease-in-out, opacity 0.5s ease;
+}
+
+/* When active, move to final place & scale 1 */
+.app-icon.active {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}

@@ -121,19 +121,43 @@ window.addEventListener('resize', updateSlidePosition);
 
 
 // Initialize slider position on page load
+// window.addEventListener('load', () => {
+//   const loader = document.getElementById('loading-screen');
+//     if (loader) {
+//       setTimeout(
+//         () => {
+//           loader.style.transition = 'opacity 1s ease';
+//           loader.style.opacity = '0';
+//           navIcons[1].click();
+
+//           setTimeout(() => {loader.remove()}, 1000);
+//         },
+//       1000
+//     );
+//   }
+  
+// });
+
 window.addEventListener('load', () => {
   const loader = document.getElementById('loading-screen');
-    if (loader) {
-      setTimeout(
-        () => {
-          loader.style.transition = 'opacity 1s ease';
-          loader.style.opacity = '0';
-          navIcons[1].click();
+  if (loader) {
+    setTimeout(() => {
+      loader.style.transition = 'opacity 1s ease';
+      loader.style.opacity = '0';
+      navIcons[1].click();
 
-          setTimeout(() => {loader.remove()}, 1000);
-        },
-      1000
-    );
+      setTimeout(() => {
+        loader.remove();
+
+        // Animate the app icons in sequence
+        const apps = document.querySelectorAll('.app-icon');
+        apps.forEach((app, i) => {
+          setTimeout(() => {
+            app.classList.add('active');
+          }, i * 10); // stagger by 10ms each
+        });
+
+      }, 1000);
+    }, 1000);
   }
-  
 });
