@@ -15,8 +15,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  background: rgb(0, 0, 0);
+  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(8px); /* for Safari */
   z-index: 9999;
   font-family: 'Segoe UI', sans-serif, Arial, sans-serif;
@@ -39,15 +39,20 @@
   75% { transform: translate(20vw, -30vh);  }
   100% { transform: translate(0, 0); }
 }
+#slides{
+  transition: 0.4s ease;
+}
+.slide {
+  transition: height 0.8s ease; /* Smooth height change */
+}
 
-/* .title{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  z-index: 1;
-  font-size: 2rem;
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-} */
+/* Taller side slides */
+.slide:not(.active-slide) {
+  height: 90vh; /* your "tall" height */
+}
+
+/* Normal height for center slide */
+.slide.active-slide {
+  height: 70vh; /* match your Home slide height */
+  backdrop-filter: blur(20px);
+}

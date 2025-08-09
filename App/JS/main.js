@@ -32,6 +32,14 @@ function updateSlidePosition() {
       icon.classList.add('opacity-40', 'shadow-[0_0_5px_cyan]');
     }
   });
+
+  document.querySelectorAll('.slide').forEach((slide, idx) => {
+    if (idx === currentIndex) {
+      slide.classList.add('active-slide');
+    } else {
+      slide.classList.remove('active-slide');
+    }
+  });
 }
 
 // Nav icon click handler
