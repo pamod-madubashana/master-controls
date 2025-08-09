@@ -1,12 +1,29 @@
+@import "tailwindcss";
+
 *{
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif , 'poppins', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
 
+#loading-screen {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* for Safari */
+  z-index: 9999;
+  font-family: 'Segoe UI', sans-serif, Arial, sans-serif;
+  color: #22d3ee; /* cyan-400 */
+  font-size: 2rem;
+  font-weight: 600;
+}
 .circle {
   position: absolute;
   border-radius: 50%;

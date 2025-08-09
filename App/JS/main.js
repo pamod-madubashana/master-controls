@@ -111,5 +111,21 @@ slider.addEventListener('mouseleave', dragEnd);
 // Update slide position on window resize
 window.addEventListener('resize', updateSlidePosition);
 
+
 // Initialize slider position on page load
-updateSlidePosition();
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loading-screen');
+    if (loader) {
+      setTimeout(
+        () => {
+          loader.style.transition = 'opacity 1s ease';
+          loader.style.opacity = '0';
+          navIcons[1].click();
+
+          setTimeout(() => {loader.remove()}, 1000);
+        },
+      1000
+    );
+  }
+  
+});
