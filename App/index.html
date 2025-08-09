@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/main.css">
+    <title>Master Controls</title>
+</head>
+<body class="bg-[#0a0a0a] text-cyan-400 select-none overflow-hidden flex flex-col items-center justify-center min-h-screen relative">
+    <div class="h-[10vh] text-3xl font-bold absolute top-10 left-0 right-0 flex items-center justify-center">Master Controls V1.01</div>
+    <div class="z-[-1] fixed inset-0 flex justify-center items-center overflow-hidden">
+        <div class="circle w-[200px] h-[200px]" style="background-color:#00ff00; animation-delay:0s;"></div>
+        <div class="circle w-[300px] h-[300px]" style="background-color:#00ffff; animation-delay:2s;"></div>
+        <div class="circle w-[150px] h-[150px]" style="background-color:#00ff00; animation-delay:4s;"></div>
+        <div class="circle w-[250px] h-[250px]" style="background-color:#ffff00; animation-delay:6s;"></div>
+    </div>
+
+    <div id="slider" class="w-screen h-[60vh] overflow-hidden relative touch-pan-y">
+        <div id="slides" class="flex h-full transition-transform duration-400 ease-in-out will-change-transform items-center gap-10">
+            <div class="slide rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl bg-green-900 bg-opacity-20 text-cyan-400">Left Slide</div>
+            <div class="slide rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl bg-cyan-900 bg-opacity-20 font-bold">Home</div>
+            <div class="slide rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl bg-red-900 bg-opacity-20 text-cyan-400">Right Slide</div>
+        </div>
+    </div>
+    <div id="navIcons" class="fixed bottom-5 w-full flex justify-center gap-10 z-10">
+        <button data-slide="0" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
+        <button data-slide="1" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-100 shadow-[0_0_15px_cyan]"></button>
+        <button data-slide="2" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
+    </div>
+    <script src="JS/main.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>

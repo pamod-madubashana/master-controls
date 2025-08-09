@@ -1,9 +1,11 @@
 :root{
-    --primary-color: #00ff26;
-    --secondary-color: #ffffff;
-    --background-color: #000000;
+    --home: url("https://i.ibb.co/rKSRVpZZ/Home.png");
+    --user: url("https://i.ibb.co/cSkDwsb1/User.png");
+    --setting: url("https://i.ibb.co/PskR58xn/Gear.png");
+    --verify: url("https://i.ibb.co/jk7yPgr5/verify.png");
+    --security: url("https://i.ibb.co/7d5MzqYZ/Security.png");
+    --autoResponse: url("https://i.ibb.co/Jjw2TNCK/Auto-Response.png");
 }
-
 
 #verifyIcon::before{
     background: url("../Src/Icons/verify.png");

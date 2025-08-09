@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Master Controls Slides - Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Background circles blur + animation */
+    .circle {
+      @apply rounded-full filter blur-[8rem] fixed;
+      border-radius: 50%;
+      animation: move 30s infinite alternate ease-in-out;
+      transition: background-color 1s;
+      will-change: transform;
+    }
+    @keyframes move {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(50vw, -20vh); }
+      50% { transform: translate(-40vw, 30vh); }
+      75% { transform: translate(20vw, -30vh);  }
+      100% { transform: translate(0, 0); }
+    }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-cyan-400 select-none overflow-hidden flex flex-col items-center justify-center min-h-screen relative">
+
+  <!-- Background circles -->
+  <div class="z-[-1] fixed inset-0 flex justify-center items-center overflow-hidden">
+    <div class="circle w-[200px] h-[200px]" style="background-color:#00ff00; animation-delay:0s;"></div>
+    <div class="circle w-[300px] h-[300px]" style="background-color:#00ffff; animation-delay:2s;"></div>
+    <div class="circle w-[150px] h-[150px]" style="background-color:#00ff00; animation-delay:4s;"></div>
+    <div class="circle w-[250px] h-[250px]" style="background-color:#ffff00; animation-delay:6s;"></div>
+    <div class="circle w-[180px] h-[180px]" style="background-color:#ff0000; animation-delay:8s;"></div>
+  </div>
+
+  <!-- Slider -->
+  <div id="slider" class="w-screen h-[60vh] overflow-hidden relative touch-pan-y">
+    <div id="slides" class="flex h-full transition-transform duration-400 ease-in-out will-change-transform">
+      <div class="slide flex-shrink-0 w-screen h-full flex items-center justify-center text-6xl bg-green-900 bg-opacity-20 text-cyan-400 drop-shadow-[0_0_10px_cyan]">Left Slide</div>
+      <div class="slide flex-shrink-0 w-screen h-full flex items-center justify-center text-6xl bg-cyan-900 bg-opacity-20 font-bold drop-shadow-[0_0_10px_cyan] rounded-10px">Master Controls</div>
+      <div class="slide flex-shrink-0 w-screen h-full flex items-center justify-center text-6xl bg-red-900 bg-opacity-20 text-cyan-400 drop-shadow-[0_0_10px_cyan]">Right Slide</div>
+    </div>
+  </div>
+
+  <!-- Navigation icons -->
+  <div id="navIcons" class="fixed bottom-5 w-full flex justify-center gap-10 z-10">
+    <button data-slide="0" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
+    <button data-slide="1" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-100 shadow-[0_0_15px_cyan]"></button>
+    <button data-slide="2" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
+  </div>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const navIcons = document.querySelectorAll('.nav-icon');
+    let currentIndex = 1; // middle slide
+
+    function updateSlidePosition() {
+      slides.style.transform = `translateX(${-currentIndex * window.innerWidth}px)`;
+      navIcons.forEach((icon, idx) => {
+        if (idx === currentIndex) {
+          icon.classList.add('opacity-100', 'shadow-[0_0_15px_cyan]');
+          icon.classList.remove('opacity-40', 'shadow-[0_0_5px_cyan]');
+        } else {
+          icon.classList.remove('opacity-100', 'shadow-[0_0_15px_cyan]');
+          icon.classList.add('opacity-40', 'shadow-[0_0_5px_cyan]');
+        }
+      });
+    }
+
+    navIcons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        currentIndex = Number(icon.dataset.slide);
+        updateSlidePosition();
+      });
+    });
+
+    // Drag/swipe support
+    let startX = 0;
+    let currentTranslate = 0;
+    let isDragging = false;
+
+    const slider = document.getElementById('slider');
+
+    slider.addEventListener('touchstart', dragStart, { passive: true });
+    slider.addEventListener('touchmove', dragMove, { passive: true });
+    slider.addEventListener('touchend', dragEnd);
+
+    slider.addEventListener('mousedown', dragStart);
+    slider.addEventListener('mousemove', dragMove);
+    slider.addEventListener('mouseup', dragEnd);
+    slider.addEventListener('mouseleave', dragEnd);
+
+    function dragStart(e) {
+      isDragging = true;
+      startX = getX(e);
+      currentTranslate = -currentIndex * window.innerWidth;
+      slides.style.transition = 'none';
+    }
+
+    function dragMove(e) {
+      if (!isDragging) return;
+      const currentX = getX(e);
+      const deltaX = currentX - startX;
+      slides.style.transform = `translateX(${currentTranslate + deltaX}px)`;
+    }
+
+    function dragEnd(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      const endX = getX(e);
+      const deltaX = endX - startX;
+      const threshold = window.innerWidth / 4;
+
+      if (deltaX > threshold && currentIndex > 0) {
+        currentIndex--;
+      } else if (deltaX < -threshold && currentIndex < 2) {
+        currentIndex++;
+      }
+      slides.style.transition = 'transform 0.4s ease';
+      updateSlidePosition();
+    }
+
+    function getX(e) {
+      if (e.type.startsWith('touch')) {
+        return e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0;
+      } else {
+        return e.clientX;
+      }
+    }
+
+    // Initialize
+    updateSlidePosition();
+
+    // Optional: handle window resize to keep correct slide position
+    window.addEventListener('resize', () => {
+      updateSlidePosition();
+    });
+  </script>
+
+</body>
+</html>
