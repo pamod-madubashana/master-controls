@@ -1,0 +1,72 @@
+[
+    {
+        "label": "web",
+        "importPath": "aiohttp",
+        "description": "aiohttp",
+        "isExtraImport": true,
+        "detail": "aiohttp",
+        "documentation": {}
+    },
+    {
+        "label": "aiohttp_jinja2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "aiohttp_jinja2",
+        "description": "aiohttp_jinja2",
+        "detail": "aiohttp_jinja2",
+        "documentation": {}
+    },
+    {
+        "label": "jinja2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "jinja2",
+        "description": "jinja2",
+        "detail": "jinja2",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Client",
+        "importPath": "pyrogram",
+        "description": "pyrogram",
+        "isExtraImport": true,
+        "detail": "pyrogram",
+        "documentation": {}
+    },
+    {
+        "label": "bot",
+        "kind": 5,
+        "importPath": "web",
+        "description": "web",
+        "peekOfCode": "bot = Client(\"web_bot\", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)\nroutes = web.RouteTableDef()\n@routes.get(\"/\")\n@aiohttp_jinja2.template(\"app.html\")\nasync def index(request):\n    # Example: replace with real group_id or from session\n    group_id = -1001234567890\n    async with bot:\n        chat = await bot.get_chat(group_id)\n        members = []",
+        "detail": "web",
+        "documentation": {}
+    },
+    {
+        "label": "routes",
+        "kind": 5,
+        "importPath": "web",
+        "description": "web",
+        "peekOfCode": "routes = web.RouteTableDef()\n@routes.get(\"/\")\n@aiohttp_jinja2.template(\"app.html\")\nasync def index(request):\n    # Example: replace with real group_id or from session\n    group_id = -1001234567890\n    async with bot:\n        chat = await bot.get_chat(group_id)\n        members = []\n        async for member in bot.iter_chat_members(group_id):",
+        "detail": "web",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "web",
+        "description": "web",
+        "peekOfCode": "app = web.Application()\naiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(\"App\"))\napp.add_routes([web.static(\"/CSS\", os.path.join(\"App\", \"CSS\")),\n                web.static(\"/JS\", os.path.join(\"App\", \"JS\"))])\napp.add_routes(routes)\nif __name__ == \"__main__\":\n    # bot.start()\n    web.run_app(app, port=8443)\n    bot.stop()",
+        "detail": "web",
+        "documentation": {}
+    }
+]
