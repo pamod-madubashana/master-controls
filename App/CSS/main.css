@@ -7,6 +7,51 @@
   transition: all 0.5s ease;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.liquidGlass-wrapper {
+  position: relative;
+  display: flex;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.liquidGlass-effect {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  /* border-radius: 20px; */
+  backdrop-filter: blur(3px);
+  filter: url(#glass-distortion);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.liquidGlass-tint {
+  z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+  /* border: 2px solid red; */
+  border-radius: 20px;
+}
+
+.liquidGlass-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 20px;
+  overflow: hidden;
+
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.liquidGlass-text {
+  z-index: 3;
+  font-size: 2rem;
+  color: black;
 }
 
 #loading-screen {
@@ -69,3 +114,4 @@
   transform: translateY(0) scale(1);
   opacity: 1;
 }
+
