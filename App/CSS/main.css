@@ -13,16 +13,17 @@
 .liquidGlass-wrapper {
   position: relative;
   display: flex;
-  z-index: -1;
   overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
 }
 
 .liquidGlass-effect {
   position: absolute;
   z-index: 0;
   inset: 0;
-  /* border-radius: 20px; */
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
   filter: url(#glass-distortion);
   overflow: hidden;
   isolation: isolate;
@@ -32,8 +33,7 @@
   z-index: 1;
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.25);
-  /* border: 2px solid red; */
+  background: rgba(255, 255, 255, 0.048);
   border-radius: 20px;
 }
 
@@ -44,14 +44,12 @@
   border-radius: 20px;
   overflow: hidden;
 
-  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
-    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+  /* box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5); */
 }
 
-.liquidGlass-text {
+.liquidGlass-context {
   z-index: 3;
-  font-size: 2rem;
-  color: black;
 }
 
 #loading-screen {
@@ -94,12 +92,17 @@
 /* Taller side slides */
 .slide:not(.active-slide) {
   height: 90vh; /* your "tall" height */
+  /* transform: translate(0,1000px); */
+  /* display: none; */
+  transition: 0.4s display ease-in-out;
 }
 
 /* Normal height for center slide */
 .slide.active-slide {
   height: 70vh; /* match your Home slide height */
-  backdrop-filter: blur(20px);
+  /* display: block; */
+  /* transform: (100px); */
+  /* backdrop-filter: blur(10px); */
 }
 
 /* Starting state: icons are translated down & scaled down */
@@ -111,7 +114,32 @@
 
 /* When active, move to final place & scale 1 */
 .app-icon.active {
+  
   transform: translateY(0) scale(1);
   opacity: 1;
 }
 
+body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url("https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/flowers.jpg")
+    center center;
+  background-size: 500px;
+  font-family: sans-serif;
+  font-weight: 300;
+
+  animation: moveBackground 60s linear infinite;
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% -500%;
+  }
+}
