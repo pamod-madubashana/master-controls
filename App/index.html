@@ -9,18 +9,15 @@
 <body class="bg-[#0a0a0a] text-cyan-400 select-none overflow-hidden flex flex-col items-center justify-center min-h-screen relative">
     <div class="h-[10vh] text-3xl font-bold absolute top-10 left-0 right-0 flex items-center justify-center">Master Controls V1.02</div>
     <div class="z-[-1] fixed inset-0 flex justify-center items-center overflow-hidden">
-        <div class="circle w-[200px] h-[200px]" style="background-color:#00ff00; animation-delay:0s;"></div>
-        <div class="circle w-[300px] h-[300px]" style="background-color:#00ffff; animation-delay:2s;"></div>
-        <div class="circle w-[150px] h-[150px]" style="background-color:#00ff00; animation-delay:4s;"></div>
-        <div class="circle w-[250px] h-[250px]" style="background-color:#ffff00; animation-delay:6s;"></div>
+        <div class="absolute bottom-[-30vw] left-1/2 -translate-x-1/2 w-[60vw] h-[60vw] bg-[#00ff00] rounded-full blur-[150px]"></div>
     </div>
     <div id="loading-screen">
         <div class="text-cyan-400 text-2xl font-semibold animate-pulse">Loading...</div>
     </div>
-    <div id="slider" class="w-screen h-[90vh] overflow-hidden relative touch-pan-y">
+    <div id="slider" class="w-screen h-[70vh] overflow-hidden relative touch-pan-y">
         <div id="slides" class="flex h-full transition-transform duration-400 ease-in-out will-change-transform items-center gap-10">
             <div class="slide liquidGlass-wrapper rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl text-cyan-400">
-                <div class="liquidGlass-effect"></div>
+                <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
                 <div class="liquidGlass-context">
@@ -28,61 +25,61 @@
                 </div>
             </div>
             <div class="slide liquidGlass-wrapper rounded-xl flex-shrink-0 w-[90vw] h-[70vh] flex items-center justify-center text-6xl text-cyan-400">
-                <div class="liquidGlass-effect"></div>
+                <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
                 <div class="liquidGlass-context">
-                    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="HomeSlide">Home</div>
+                    <div class="absolute top-10 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="HomeSlide">Home</div>
                     <div class="grid grid-cols-3 gap-8 mt-16 place-items-center">
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl bg-[url('App/Src/Icons/AppIcons/verify.png')] bg-cover bg-center"></div>
                             <span class="mt-2 text-sm font-semibold">Verify</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                         <span class="mt-2 text-sm font-semibold">Auto Response</span>
                         </div>
                         
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Database</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Broadcast</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Groups</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl shadow">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Channels</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Requests</span>
                         </div>
 
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">Inbox</span>
                         </div>
                         
                         <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center text-3xl shadow-[0_0_15px_#00ff00]">🟢</div>
+                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
                             <span class="mt-2 text-sm font-semibold">API Keys</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="slide liquidGlass-wrapper rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl text-cyan-400">
-                <div class="liquidGlass-effect"></div>
+                <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
                 <div class="liquidGlass-context">
