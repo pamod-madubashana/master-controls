@@ -1,19 +1,17 @@
 const slides = document.getElementById('slides');
 const navIcons = document.querySelectorAll('.nav-icon');
-let currentIndex = 1; // Start at middle slide (Home)
-const gap = 40; // gap-10 in Tailwind is 2.5rem = 40px
+let currentIndex = 1; 
+const gap = 32; 
 
-// Get slide width (without gap)
 function getSlideWidth() {
   return document.querySelector('.slide').getBoundingClientRect().width;
 }
 
-// Get full step between slides (slide width + gap)
+
 function getSlideStep() {
   return getSlideWidth() + gap;
 }
 
-// Update slide position and active nav icon
 function updateSlidePosition() {
   const slideWidth = getSlideWidth();
   const step = getSlideStep();
@@ -42,7 +40,7 @@ function updateSlidePosition() {
   });
 }
 
-// Nav icon click handler
+
 navIcons.forEach(icon => {
   icon.addEventListener('click', () => {
     currentIndex = Number(icon.dataset.slide);
@@ -50,12 +48,11 @@ navIcons.forEach(icon => {
   });
 });
 
-// Drag/swipe support variables
+
 let startX = 0;
 let currentTranslate = 0;
 let isDragging = false;
 
-// Helper to get pointer X position
 function getX(e) {
   if (e.type.startsWith('touch')) {
     return e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0;
@@ -63,7 +60,6 @@ function getX(e) {
   return e.clientX;
 }
 
-// Drag start event
 function dragStart(e) {
   isDragging = true;
   startX = getX(e);
@@ -77,7 +73,7 @@ function dragStart(e) {
   slides.style.transition = 'none';
 }
 
-// Drag move event
+
 function dragMove(e) {
   if (!isDragging) return;
   const currentX = getX(e);
@@ -85,7 +81,6 @@ function dragMove(e) {
   slides.style.transform = `translateX(${currentTranslate + deltaX}px)`;
 }
 
-// Drag end event
 function dragEnd(e) {
   if (!isDragging) return;
   isDragging = false;
@@ -105,7 +100,7 @@ function dragEnd(e) {
   updateSlidePosition();
 }
 
-// Attach mouse and touch event listeners
+
 const slider = document.getElementById('slider');
 slider.addEventListener('touchstart', dragStart, { passive: true });
 slider.addEventListener('touchmove', dragMove, { passive: true });
@@ -116,27 +111,8 @@ slider.addEventListener('mousemove', dragMove);
 slider.addEventListener('mouseup', dragEnd);
 slider.addEventListener('mouseleave', dragEnd);
 
-// Update slide position on window resize
 window.addEventListener('resize', updateSlidePosition);
 
-
-// Initialize slider position on page load
-// window.addEventListener('load', () => {
-//   const loader = document.getElementById('loading-screen');
-//     if (loader) {
-//       setTimeout(
-//         () => {
-//           loader.style.transition = 'opacity 1s ease';
-//           loader.style.opacity = '0';
-//           navIcons[1].click();
-
-//           setTimeout(() => {loader.remove()}, 1000);
-//         },
-//       1000
-//     );
-//   }
-  
-// });
 
 window.addEventListener('load', () => {
   const loader = document.getElementById('loading-screen');
