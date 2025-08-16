@@ -10,86 +10,56 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
 }
 
-.liquidGlass-wrapper {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+:root{
+  --glass-radius: 22px;
 }
 
-.liquidGlass-effect {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  backdrop-filter: blur(10px);
-  filter: url(#glass-distortion);
-  overflow: hidden;
-  isolation: isolate;
-}
+.liquidGlass-wrapper{position:relative;display:flex;overflow:hidden;cursor:pointer;border-radius:var(--glass-radius);box-shadow:0 8px 28px rgba(0, 0, 0, 0.055),0 0 32px rgba(0, 255, 255, 0.034)}
+.liquidGlass-effect{position:absolute;inset:0;z-index:0;backdrop-filter:blur(22px) saturate(160%);filter:url(#glass-distortion);isolation:isolate}
+.liquidGlass-tint{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border-radius:var(--glass-radius);}
+.liquidGlass-shine{display:none}
+.liquidGlass-context{z-index:3}
 
-.liquidGlass-tint {
-  z-index: 1;
-  inset: 0;
-  position: absolute;
-  background: rgba(255, 255, 255, 0.048);
-  border-radius: 20px;
-}
-
-.liquidGlass-shine {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  border-radius: 20px;
-}
-
-.liquidGlass-context {
-  z-index: 3;
-}
-
-#loading-screen {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgb(0, 0, 0);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(8px); 
-  z-index: 9;
-  font-family: 'Segoe UI', sans-serif, Arial, sans-serif;
-  color: #22d3ee;
-  font-size: 2rem;
-  font-weight: 600;
-}
+#loading-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(14px);z-index:50}
 
 #slides{
-  transition: 0.4s ease;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1)
 }
 .slide {
   /* backdrop-filter: blur(10px); */
   z-index: -99;
   transition: height 0.6s;
+  height: 70vh; 
 }
 
-.slide:not(.active-slide) {
+/* .slide:not(.active-slide) {
   height: 75vh;
 }
 
 .slide.active-slide {
   height: 70vh; 
+} */
+.app-icon{opacity:0;transform:translateY(24px) scale(.94);transition:opacity .4s ease,transform .5s ease}
+.app-icon.active{opacity:1;transform:translateY(0) scale(1)}
+.app-bg{
+  background:radial-gradient(100% 100% at 30% 20%,rgba(255,255,255,.22),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(10px) saturate(160%);
+  box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 18px rgba(0,255,255,.25)
+}
+.app-bg::after{
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: red;
+  background: var(--icon);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 
-.app-icon {
-  opacity: 0;
-  transform: translateY(400px) scale(0.5);
-  transition: transform 5s ease-in-out, opacity 0.5s ease;
-}
-
-.app-icon .app-bg{
+/* .app-icon .app-bg{
   background: radial-gradient(circle, #9796969f 0%, #ffffff79 100%);
   opacity: 0.8;
 }
@@ -98,4 +68,28 @@
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+ */
 
+ /* body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url("https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/flowers.jpg")
+    center center;
+  background-size: 500px;
+  font-family: sans-serif;
+  font-weight: 300;
+
+  animation: moveBackground 60s linear infinite;
+ }
+@keyframes moveBackground {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% -500%;
+  }
+} */

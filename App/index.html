@@ -20,79 +20,109 @@
                 <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
-                <div class="liquidGlass-context">
-                    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="UserSlide">Users</div>
+                <div class="liquidGlass-context w-full h-full p-6 relative">
+                    <div class="absolute top-5 left-1/2 -translate-x-1/2 font-bold text-2xl" id="UserSlide">Users</div>
+                    <div class="mt-14 grid grid-cols-1 gap-3 text-sm text-cyan-200/90">
+                        <div class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                        <span>Active Users</span><span class="text-white font-semibold">1,284</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                        <span>New Today</span><span class="text-white font-semibold">57</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                        <span>Pending Invites</span><span class="text-white font-semibold">12</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="slide liquidGlass-wrapper rounded-xl flex-shrink-0 w-[90vw] h-[70vh] flex items-center justify-center text-6xl text-cyan-400">
                 <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
-                <div class="liquidGlass-context">
-                    <div class="absolute top-10 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="HomeSlide">Home</div>
-                    <div class="grid grid-cols-3 gap-8 mt-16 place-items-center">
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl bg-[url('App/Src/Icons/AppIcons/verify.png')] bg-cover bg-center"></div>
-                            <span class="mt-2 text-sm font-semibold">Verify</span>
-                        </div>
+                <div class="liquidGlass-context w-full h-full p-6 relative">
+                    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="HomeSlide">Home</div>
+                    <div class="mt-14 w-full">
+                        <div class="mx-auto w-full max-w-[900px] px-4">
+                            <div class="grid grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-10 place-items-center">
+                            
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/verify.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Verify</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                        <span class="mt-2 text-sm font-semibold">Auto Response</span>
-                        </div>
-                        
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Database</span>
-                        </div>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/auto-response.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Auto Response</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Broadcast</span>
-                        </div>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/database.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Database</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Groups</span>
-                        </div>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/broadcast.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Broadcast</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl shadow">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Channels</span>
-                        </div>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/groups.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Groups</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Requests</span>
-                        </div>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/channels.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Channels</span>
+                            </div>
 
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">Inbox</span>
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/requests.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Requests</span>
+                            </div>
+
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/inbox.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">Inbox</span>
+                            </div>
+
+                            <div class="app-icon group flex flex-col items-center w-[96px] md:w-[110px]">
+                                <div style="--icon: url('../Src/Icons/AppIcons/api-keys.png');" class="app-bg w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-2xl flex items-center justify-center text-3xl md:text-4xl transition-transform group-hover:scale-105 active:scale-95"></div>
+                                <span class="mt-3 text-xs md:text-sm font-semibold text-cyan-200 text-center">API Keys</span>
+                            </div>
+
+                            </div>
                         </div>
-                        
-                        <div class="app-icon flex flex-col items-center cursor-pointer hover:scale-110 transition-transform">
-                            <div class="app-bg w-20 h-20 rounded-2xl flex items-center justify-center text-3xl">🟢</div>
-                            <span class="mt-2 text-sm font-semibold">API Keys</span>
                         </div>
-                    </div>
                 </div>
             </div>
             <div class="slide liquidGlass-wrapper rounded-xl flex-shrink-0 w-[90vw] h-full flex items-center justify-center text-6xl text-cyan-400">
                 <!-- <div class="liquidGlass-effect"></div> -->
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
-                <div class="liquidGlass-context">
-                    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 font-bold text-2xl" id="SettingsSlide">Settings</div>
+                <div class="liquidGlass-context w-full h-full p-6 relative">
+                <div class="absolute top-5 left-1/2 -translate-x-1/2 font-bold text-2xl" id="SettingsSlide">Settings</div>
+                <div class="mt-16 space-y-3 text-sm">
+                    <label class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                    <span>Dark Mode</span>
+                    <input type="checkbox" checked class="accent-cyan-400 scale-110" />
+                    </label>
+                    <label class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                    <span>Haptics</span>
+                    <input type="checkbox" class="accent-cyan-400 scale-110" />
+                    </label>
+                    <label class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                    <span>Notifications</span>
+                    <input type="checkbox" checked class="accent-cyan-400 scale-110" />
+                    </label>
                 </div>
                 
             </div>
         </div>
     </div>
-    <div id="navIcons" class="fixed bottom-5 w-full flex justify-center gap-10 z-10">
-        <button data-slide="0" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
-        <button data-slide="1" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-100 shadow-[0_0_15px_cyan]"></button>
-        <button data-slide="2" class="nav-icon w-8 h-8 rounded-full bg-cyan-400 opacity-40 shadow-[0_0_5px_cyan] transition-opacity duration-300 hover:opacity-80"></button>
+    <div id="navIcons" class="fixed bottom-5 w-full flex justify-center gap-8 z-10">
+        <button aria-label="Users"    data-slide="0" class="nav-icon w-3.5 h-3.5 rounded-full bg-cyan-400 opacity-40"></button>
+        <button aria-label="Home"     data-slide="1" class="nav-icon w-3.5 h-3.5 rounded-full bg-cyan-400 opacity-100" aria-current="true"></button>
+        <button aria-label="Settings" data-slide="2" class="nav-icon w-3.5 h-3.5 rounded-full bg-cyan-400 opacity-40"></button>
     </div>
     <svg style="position:absolute; visibility:hidden;">
       <filter
