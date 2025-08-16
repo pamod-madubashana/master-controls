@@ -114,6 +114,62 @@ slider.addEventListener('mouseleave', dragEnd);
 window.addEventListener('resize', updateSlidePosition);
 
 
+const icons = document.querySelectorAll('.app-icon');
+icons.forEach(icon => {
+  icon.addEventListener('click', () => {
+    const rect = icon.getBoundingClientRect();
+    const className = `app-window-clone ${rect.top}-${rect.left}`;
+
+    const clone = document.createElement('div');
+    clone.className = className;
+    clone.style.left = rect.left + "px";
+    clone.style.top = rect.top + "px";
+    clone.style.width = rect.width + "px";
+    clone.style.height = rect.height + "px";
+
+    document.body.appendChild(clone);
+    icons.forEach(icon => icon.style.opacity = "0");
+    clone.getBoundingClientRect();
+    clone.style.position = "fixed";
+    clone.style.top = "50%";
+    clone.style.left = "50%";
+    clone.style.transform = "translate(-50%, -50%)";
+    
+    clone.style.width = "100vw";
+    clone.style.height = "100vh";
+
+    setTimeout(() => {
+      
+      const appWindow = document.querySelector('.app-window');
+      appWindow.classList.add('active');
+    }, 300);
+  });
+});
+
+
+document.getElementById('closeApp').addEventListener('click', () => {
+  document.querySelector('.app-window').classList.remove('active');
+  const clone = document.querySelector('.app-window-clone');
+  if (clone) {
+    setTimeout(() => {
+        const className = clone.className;
+        const [top, left] = className.replace("app-window-clone ", "").split("-");
+        clone.style.top = (parseInt(top) + 50) + "px";
+        clone.style.left = (parseInt(left) + 50) + "px";
+        clone.style.width = "10px";
+        clone.style.height = "10px";
+        clone.style.transform = "translate(0, 0)";
+        icons.forEach(icon => icon.style.opacity = "1");
+      setTimeout(() => {
+        clone.remove();
+      }, 300);
+    }, 0);
+  }
+});
+
+
+
+
 window.addEventListener('load', () => {
   const loader = document.getElementById('loading-screen');
   if (loader) {
