@@ -1,6 +1,7 @@
 const slides = document.getElementById('slides');
 const navIcons = document.querySelectorAll('.nav-icon');
 let currentIndex = 1; 
+let isAppOpen = false;
 const gap = 32; 
 
 function getSlideWidth() {
@@ -61,6 +62,7 @@ function getX(e) {
 }
 
 function dragStart(e) {
+  if (isAppOpen) return;
   isDragging = true;
   startX = getX(e);
 
@@ -117,6 +119,7 @@ window.addEventListener('resize', updateSlidePosition);
 const icons = document.querySelectorAll('.app-icon');
 icons.forEach(icon => {
   icon.addEventListener('click', () => {
+    isAppOpen = true;
     const rect = icon.getBoundingClientRect();
     const className = `app-window-clone ${rect.top}-${rect.left}`;
 
@@ -148,6 +151,7 @@ icons.forEach(icon => {
 
 
 document.getElementById('closeApp').addEventListener('click', () => {
+  isAppOpen = false;
   document.querySelector('.app-window').classList.remove('active');
   const clone = document.querySelector('.app-window-clone');
   if (clone) {
