@@ -142,35 +142,37 @@ icons.forEach(icon => {
     clone.style.height = "100vh";
 
     setTimeout(() => {
-      
-      const appWindow = document.querySelector('.app-window');
+      const classString = [...icon.classList][1]; 
+      const appWindow = document.querySelector(`.app-window.${classString}`);
       appWindow.classList.add('active');
     }, 300);
   });
 });
 
-
-document.getElementById('closeApp').addEventListener('click', () => {
-  isAppOpen = false;
-  document.querySelector('.app-window').classList.remove('active');
-  const clone = document.querySelector('.app-window-clone');
-  if (clone) {
-    setTimeout(() => {
-        const className = clone.className;
-        const [top, left] = className.replace("app-window-clone ", "").split("-");
-        clone.style.top = (parseInt(top) + 30) + "px";
-        clone.style.left = (parseInt(left) + 40) + "px";
-        clone.style.width = "10px";
-        clone.style.height = "10px";
-        clone.style.transform = "translate(0, 0)";
-        icons.forEach(icon => icon.style.opacity = "1");
+const popUpCloseButtons = document.querySelectorAll('.close-cross');
+popUpCloseButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const className = button.classList[1];
+    isAppOpen = false;
+    document.querySelector(`.app-window.${className}`).classList.remove('active');
+    const clone = document.querySelector('.app-window-clone');
+    if (clone) {
       setTimeout(() => {
-        clone.remove();
-      }, 300);
-    }, 0);
-  }
-});
-
+          const className = clone.className;
+          const [top, left] = className.replace("app-window-clone ", "").split("-");
+          clone.style.top = (parseInt(top) + 30) + "px";
+          clone.style.left = (parseInt(left) + 40) + "px";
+          clone.style.width = "10px";
+          clone.style.height = "10px";
+          clone.style.transform = "translate(0, 0)";
+          icons.forEach(icon => icon.style.opacity = "1");
+        setTimeout(() => {
+          clone.remove();
+        }, 300);
+      }, 0);
+    }
+  });
+})
 
 
 
