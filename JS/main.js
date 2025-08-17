@@ -120,6 +120,7 @@ const icons = document.querySelectorAll('.app-icon');
 icons.forEach(icon => {
   icon.addEventListener('click', () => {
     isAppOpen = true;
+    history.pushState({ appOpen: true }, "", window.location.href);
     const rect = icon.getBoundingClientRect();
     const className = `app-window-clone ${rect.top}-${rect.left}`;
 
@@ -149,34 +150,61 @@ icons.forEach(icon => {
   });
 });
 
+function triggerBounce(el) {
+  el.classList.remove("bounce");
+  void el.offsetWidth;
+  el.classList.add("bounce");
+}
+
+function closeAppWindow(bclassName) {
+  isAppOpen = false;
+
+  const appWindow = document.querySelector(`.app-window.${bclassName}`);
+  if (appWindow) {
+    appWindow.classList.remove('active');
+  }
+
+  const clone = document.querySelector('.app-window-clone');
+  if (clone) {
+    setTimeout(() => {
+      const className = clone.className;
+      const [top, left] = className.replace("app-window-clone ", "").split("-");
+
+      clone.style.top = (parseInt(top) + 30) + "px";
+      clone.style.left = (parseInt(left) + 40) + "px";
+      clone.style.width = "10px";
+      clone.style.height = "10px";
+      clone.style.transform = "translate(0, 0)";
+      icons.forEach(icon => icon.style.opacity = "1");
+
+      const icon = document.querySelector(`.app-icon.${bclassName}`);
+      triggerBounce(icon);
+
+      setTimeout(() => {
+        clone.remove();
+      }, 300);
+    }, 0);
+  }
+}
 const popUpCloseButtons = document.querySelectorAll('.close-cross');
 popUpCloseButtons.forEach(button => {
   button.addEventListener('click', () => {
-    const className = button.classList[1];
-    isAppOpen = false;
-    document.querySelector(`.app-window.${className}`).classList.remove('active');
-    const clone = document.querySelector('.app-window-clone');
-    if (clone) {
-      setTimeout(() => {
-          const className = clone.className;
-          const [top, left] = className.replace("app-window-clone ", "").split("-");
-          clone.style.top = (parseInt(top) + 30) + "px";
-          clone.style.left = (parseInt(left) + 40) + "px";
-          clone.style.width = "10px";
-          clone.style.height = "10px";
-          clone.style.transform = "translate(0, 0)";
-          icons.forEach(icon => icon.style.opacity = "1");
-        setTimeout(() => {
-          clone.remove();
-        }, 300);
-      }, 0);
-    }
+    const bclassName = button.classList[1];
+    closeAppWindow(bclassName);
   });
-})
-
-
+});
+window.addEventListener("popstate", () => {
+  if (isAppOpen) {
+    const appWindow = document.querySelector('.app-window.active');
+    if (appWindow) {
+      const bclassName = [...appWindow.classList][1];
+      closeAppWindow(bclassName);
+    }
+  }
+});
 
 window.addEventListener('load', () => {
+  history.replaceState({ home: true }, "", window.location.href);
   const loader = document.getElementById('loading-screen');
   if (loader) {
     setTimeout(() => {
