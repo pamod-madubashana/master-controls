@@ -24,11 +24,11 @@ function updateSlidePosition() {
 
   navIcons.forEach((icon, idx) => {
     if (idx === currentIndex) {
-      icon.classList.add('opacity-100', 'shadow-[0_0_15px_cyan]');
-      icon.classList.remove('opacity-40', 'shadow-[0_0_5px_cyan]');
+      icon.classList.add('opacity-100');
+      icon.classList.remove('opacity-40');
     } else {
-      icon.classList.remove('opacity-100', 'shadow-[0_0_15px_cyan]');
-      icon.classList.add('opacity-40', 'shadow-[0_0_5px_cyan]');
+      icon.classList.remove('opacity-100');
+      icon.classList.add('opacity-40');
     }
   });
 

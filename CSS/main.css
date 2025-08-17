@@ -34,7 +34,11 @@ body{background: #0a0a0a;}
 .app-window {position: fixed;inset: 0;z-index: 200;display: none;}
 .app-window.active {display: flex;align-items: center;justify-content: center;}
 
-
+.nav-icon{
+  background: var(--icon);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 @keyframes bounce { 
   0%   { transform: translateY(0); }
