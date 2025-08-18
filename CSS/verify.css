@@ -1,7 +1,7 @@
 .content-scroll{
     position: absolute;
     top: 4vh;
-    width: 100%;
+    width:80vw;
     height: 73vh;
     background: transparent;
     border: 1px solid rgba(95, 95, 95, 0.678);

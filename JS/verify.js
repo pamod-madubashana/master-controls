@@ -5,12 +5,12 @@ verifyToggle.addEventListener('click', () => {
     if(verifyToggle.classList.contains('active')){
         verifyToggle.classList.remove('active');
         IsVerifyOn = false;
-        VerifySettings(IsVerifyOn)
+        VerifySettings(IsVerifyOn);
     }
     else{
         verifyToggle.classList.add('active');
         IsVerifyOn = true;
-        VerifySettings(IsVerifyOn)
+        VerifySettings(IsVerifyOn);
     } 
 });
 
