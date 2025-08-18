@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Liquid Glass UI - Apple-Inspired Glass Effects Library</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: white;
+      }
+
+      .content {
+        padding-top: 40px;
+        max-width: 800px;
+        margin: auto;
+      }
+
+      .glass-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      .glass-container-circle {
+        aspect-ratio: 1 / 1; /* Force perfect square ratio */
+        flex-shrink: 0;
+        flex-grow: 0;
+      }
+
+      .glass-container-pill {
+        flex-shrink: 0;
+        flex-grow: 0;
+      }
+
+      .glass-button {
+        position: relative;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        pointer-events: auto;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box; /* Ensure padding doesn't affect size calculations */
+      }
+
+      .glass-button-circle {
+        aspect-ratio: 1 / 1; /* Force perfect square ratio */
+        flex-shrink: 0;
+        flex-grow: 0;
+      }
+
+      .glass-button-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+        font-weight: normal;
+        color: white;
+        font-family: system-ui, -apple-system, sans-serif;
+        white-space: nowrap;
+      }
+
+    /* Demo layout styles */
+    .demo-layout {
+      position: fixed;
+      top: 60px;
+      left: max(20px, calc((100vw - 800px) / 2 + 20px));
+      width: 400px;
+      height: 440px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+      pointer-events: none;
+    }
+
+      .demo-layout > * {
+        pointer-events: auto;
+      }
+
+      .demo-row {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      /* Glass Controls Panel */
+      .glass-controls {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        z-index: 10000;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 14px;
+        color: #333;
+        max-height: 80vh;
+        /* overflow */
+      }
+
+      .glass-controls .glass-container {
+        width: 300px;
+        min-height: 660px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+
+      .glass-controls h3 {
+        margin: 0 0 16px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #222;
+        text-align: center;
+      }
+
+      .control-group {
+        margin-bottom: 16px;
+      }
+
+      .control-group label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 500;
+        color: #444;
+      }
+
+      .control-group input[type='range'] {
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .control-group input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #007aff;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .control-group input[type='range']::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #007aff;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .control-value {
+        display: inline-block;
+        float: right;
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .control-group input[type='checkbox'] {
+        margin-right: 8px;
+        transform: scale(1.2);
+      }
+
+      /* Image styles */
+      .hero-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+
+      .content-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        margin: 20px 0;
+        border-radius: 8px;
+      }
+
+      .gradient-banner {
+        height: 300px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .gradient-banner h2 {
+        color: white;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Glass UI Demo Layout -->
+    <div id="demo-layout" class="demo-layout">
+      <div id="hello-row"></div>
+      <div id="controls-row" class="demo-row"></div>
+      <div id="container-row"></div>
+      <div id="standalone-row"></div>
+    </div>
+
+    <!-- Glass Effects Controls Panel -->
+    <div id="glass-controls-container" class="glass-controls"></div>
+
+    <div class="content">
+      <img
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=300&fit=crop"
+        class="hero-image"
+        alt="Mountain landscape"
+      />
+      <h1>Liquid Glass UI Library</h1>
+
+      <p>
+        <strong>Inspired by Apple's new Liquid Glass design language</strong>, this WebGL-powered library brings Vision
+        Pro-style glass effects to the web with sophisticated refraction, blur, and masking systems.
+      </p>
+
+      <h2>Advanced Glass Effects Architecture</h2>
+      <p>
+        Our library implements real-time glass rendering using WebGL shaders with multi-layer refraction systems. Each
+        glass element samples the background through sophisticated algorithms that simulate physical glass properties
+        including edge distortion, rim effects, and customizable center warping.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Forest path"
+      />
+      <p>
+        The glass effects dynamically sample these background images, creating realistic refraction and blur that adapts
+        to any content beneath the glass surfaces.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Lake and mountains"
+      />
+      <p>
+        Notice how the glass buttons above interact with different image content - the WebGL shaders analyze the
+        background in real-time to create convincing glass distortion effects.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Mountain vista"
+      />
+      <p>
+        Each glass element uses sophisticated sampling techniques to blur and refract the content behind it, creating
+        depth and visual hierarchy while maintaining readability.
+      </p>
+
+      <img
+        src="https://images.unsplash.com/photo-1418065460487-3956c3150ec4?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Forest landscape"
+      />
+      <p>
+        The scrolling interaction demonstrates how glass elements maintain their effects during dynamic page movement,
+        continuously updating their background sampling.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Nature scene"
+      />
+      <p>
+        Try adjusting the real-time controls to see how different parameters affect the glass rendering - from subtle
+        transparency to dramatic refraction.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop"
+        class="content-image"
+        alt="Woodland path"
+      />
+      <p>
+        This extensive content ensures the glass effects can be tested across various backgrounds and scroll positions,
+        demonstrating the robustness of the WebGL implementation.
+      </p>
+
+      <div class="gradient-banner">
+        <h2>Beautiful glass effects with real images!</h2>
+      </div>
+
+      <h2>Technical Capabilities & Architecture</h2>
+
+      <h3>🎯 Button & Container Types</h3>
+      <p>The library supports three distinct geometric shapes, each with specialized WebGL shader calculations:</p>
+      <ul>
+        <li><strong>Rounded Rectangles</strong> - Classic iOS-style buttons with customizable corner radius</li>
+        <li><strong>Perfect Circles</strong> - Circular buttons ideal for icons and compact controls</li>
+        <li><strong>Pill/Capsule Shapes</strong> - Pharmaceutical-inspired elongated buttons with semicircular ends</li>
+      </ul>
+
+      <h3>⚙️ Real-Time Control System</h3>
+      <p>Every glass parameter is controllable via the live settings panel (which itself is a glass container):</p>
+      <ul>
+        <li><strong>Edge & Rim Intensity</strong> - Controls glass refraction strength at boundaries</li>
+        <li><strong>Distance Falloffs</strong> - Exponential curves that define effect areas</li>
+        <li><strong>Center Warp Toggle</strong> - Optional content distortion for dramatic effects</li>
+        <li><strong>Corner Enhancement</strong> - Specialized corner light effects</li>
+        <li><strong>Ripple Textures</strong> - Surface imperfection simulation</li>
+        <li><strong>Blur Radius</strong> - Background defocus amount</li>
+      </ul>
+
+      <h3>🏗️ Flexible Architecture</h3>
+      <p>
+        <strong>Container Class:</strong> Base glass surface with automatic child management, supports standalone page
+        sampling or nested parent-child relationships.
+      </p>
+      <p>
+        <strong>Button Class:</strong> Extends Container with text overlays, click handlers, and intelligent sizing.
+        Buttons can work independently or as children of containers.
+      </p>
+      <p>
+        <strong>Nested Glass System:</strong> Child buttons sample their parent container's rendered output for true
+        layered glass effects.
+      </p>
+
+      <h3>🔬 WebGL Implementation</h3>
+      <p>Built with cutting-edge graphics techniques:</p>
+      <ul>
+        <li><strong>Multi-Layer Refraction</strong> - Separate edge, rim, and base intensity calculations</li>
+        <li><strong>Shape-Aware Normals</strong> - Different algorithms for rounded rectangles, circles, and pills</li>
+        <li><strong>Gaussian Blur Sampling</strong> - 13×13 adaptive blur with circular masking</li>
+        <li><strong>Real-Time Page Capture</strong> - html2canvas integration for background sampling</li>
+        <li><strong>Dynamic Uniform Updates</strong> - Live parameter changes without shader recompilation</li>
+      </ul>
+
+      <h3>🚀 Endless Possibilities</h3>
+      <p>
+        This foundation enables countless UI patterns: navigation bars, modals, cards, notifications, dock systems,
+        control panels, and any interface element where Apple's Liquid Glass aesthetic is desired. The real-time
+        parameter system makes it perfect for design prototyping and creating unique glass signatures for different
+        applications.
+      </p>
+
+      <p>
+        <em
+          >Experience the future of web interfaces with physically-accurate glass rendering that rivals native iOS and
+          macOS applications.</em
+        >
+      </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- Glass Container & Button Library -->
+    <script>
+      class Container {
+        static instances = []
+        static pageSnapshot = null
+        static isCapturing = false
+        static waitingForSnapshot = []
+
+        constructor(options = {}) {
+          this.width = 0 // Will be set from DOM
+          this.height = 0 // Will be set from DOM
+          this.borderRadius = options.borderRadius || 48
+          this.type = options.type || 'rounded' // "rounded", "circle", or "pill"
+
+          this.canvas = null
+          this.element = null
+          this.gl = null
+          this.gl_refs = {}
+          this.webglInitialized = false
+          this.children = [] // Child buttons/components
+
+          // Add to instances
+          Container.instances.push(this)
+
+          // Initialize
+          this.init()
+        }
+
+        addChild(child) {
+          this.children.push(child)
+          child.parent = this
+
+          // Add child's element to container
+          if (child.element && this.element) {
+            this.element.appendChild(child.element)
+          }
+
+          // If child is a button, set up nested glass
+          if (child instanceof Button) {
+            child.setupAsNestedGlass()
+          }
+
+          // Update container size based on actual DOM size
+          this.updateSizeFromDOM()
+
+          return child
+        }
+
+        removeChild(child) {
+          const index = this.children.indexOf(child)
+          if (index > -1) {
+            this.children.splice(index, 1)
+            child.parent = null
+
+            if (child.element && this.element.contains(child.element)) {
+              this.element.removeChild(child.element)
+            }
+
+            // Update container size after removing child
+            this.updateSizeFromDOM()
+          }
+        }
+
+        updateSizeFromDOM() {
+          // Wait for next frame to ensure DOM layout is complete
+          requestAnimationFrame(() => {
+            const rect = this.element.getBoundingClientRect()
+            let newWidth = Math.ceil(rect.width)
+            let newHeight = Math.ceil(rect.height)
+
+            // Apply type-specific sizing logic
+            if (this.type === 'circle') {
+              // For circles, ensure perfect square
+              const size = Math.max(newWidth, newHeight)
+              newWidth = size
+              newHeight = size
+              this.borderRadius = size / 2 // 50% for perfect circle
+
+              // Force exact square dimensions
+              this.element.style.width = size + 'px'
+              this.element.style.height = size + 'px'
+              this.element.style.borderRadius = this.borderRadius + 'px'
+            } else if (this.type === 'pill') {
+              // For pills, border radius is half the height
+              this.borderRadius = newHeight / 2
+              this.element.style.borderRadius = this.borderRadius + 'px'
+            }
+
+            if (newWidth !== this.width || newHeight !== this.height) {
+              this.width = newWidth
+              this.height = newHeight
+
+              // Update canvas size to match actual DOM size
+              this.canvas.width = newWidth
+              this.canvas.height = newHeight
+              this.canvas.style.width = newWidth + 'px'
+              this.canvas.style.height = newHeight + 'px'
+              this.canvas.style.borderRadius = this.borderRadius + 'px'
+
+                             // Update WebGL viewport if initialized
+               if (this.gl_refs.gl) {
+                 this.gl_refs.gl.viewport(0, 0, newWidth, newHeight)
+                 this.gl_refs.gl.uniform2f(this.gl_refs.resolutionLoc, newWidth, newHeight)
+                 this.gl_refs.gl.uniform1f(this.gl_refs.borderRadiusLoc, this.borderRadius)
+               }
+               
+               // Update any nested glass children when container size changes
+               this.children.forEach(child => {
+                 if (child instanceof Button && child.isNestedGlass && child.gl_refs.gl) {
+                   const gl = child.gl_refs.gl
+                   
+                   // Update child's texture to match new container size
+                   gl.bindTexture(gl.TEXTURE_2D, child.gl_refs.texture)
+                   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, newWidth, newHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
+                   
+                   // Update child's uniforms
+                   gl.uniform2f(child.gl_refs.textureSizeLoc, newWidth, newHeight)
+                   if (child.gl_refs.containerSizeLoc) {
+                     gl.uniform2f(child.gl_refs.containerSizeLoc, newWidth, newHeight)
+                   }
+                 }
+               })
+             }
+           })
+         }
+
+        init() {
+          this.createElement()
+          this.setupCanvas()
+
+          // Get initial size from DOM
+          this.updateSizeFromDOM()
+
+          // Handle page snapshot
+          if (Container.pageSnapshot) {
+            // Snapshot already exists, initialize immediately
+            this.initWebGL()
+          } else if (Container.isCapturing) {
+            // Snapshot in progress, add to waiting queue
+            Container.waitingForSnapshot.push(this)
+          } else {
+            // Start snapshot process
+            Container.isCapturing = true
+            Container.waitingForSnapshot.push(this)
+            this.capturePageSnapshot()
+          }
+        }
+
+        createElement() {
+          // Create wrapper element with CSS class
+          this.element = document.createElement('div')
+          this.element.className = 'glass-container'
+
+          // Add type-specific classes
+          if (this.type === 'circle') {
+            this.element.classList.add('glass-container-circle')
+          } else if (this.type === 'pill') {
+            this.element.classList.add('glass-container-pill')
+          }
+
+          this.element.style.borderRadius = this.borderRadius + 'px'
+
+          // Create canvas (will be sized after DOM layout)
+          this.canvas = document.createElement('canvas')
+          this.canvas.style.borderRadius = this.borderRadius + 'px'
+          this.canvas.style.position = 'absolute'
+          this.canvas.style.top = '0'
+          this.canvas.style.left = '0'
+          this.canvas.style.width = '100%'
+          this.canvas.style.height = '100%'
+          this.canvas.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.25)'
+          this.canvas.style.zIndex = '-1' // Canvas behind children
+
+          this.element.appendChild(this.canvas)
+        }
+
+        setupCanvas() {
+          this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
+          if (!this.gl) {
+            console.error('WebGL not supported')
+            return
+          }
+        }
+
+        getPosition() {
+          // Get actual screen position using getBoundingClientRect
+          const rect = this.canvas.getBoundingClientRect()
+          return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+          }
+        }
+
+        capturePageSnapshot() {
+          console.log('Capturing page snapshot...')
+          html2canvas(document.body, {
+            scale: 1,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null,
+            ignoreElements: function (element) {
+              // Ignore all glass elements
+              return (
+                element.classList.contains('glass-container') ||
+                element.classList.contains('glass-button') ||
+                element.classList.contains('glass-button-text')
+              )
+            }
+          })
+            .then(snapshot => {
+              console.log('Page snapshot captured')
+              Container.pageSnapshot = snapshot
+              Container.isCapturing = false
+
+              // Initialize WebGL for all waiting containers
+              const waitingContainers = Container.waitingForSnapshot.slice()
+              Container.waitingForSnapshot = []
+
+              waitingContainers.forEach(container => {
+                if (!container.webglInitialized) {
+                  container.initWebGL()
+                }
+              })
+            })
+            .catch(error => {
+              console.error('html2canvas error:', error)
+              Container.isCapturing = false
+              Container.waitingForSnapshot = []
+            })
+        }
+
+        initWebGL() {
+          if (!Container.pageSnapshot || !this.gl) return
+
+          const img = new Image()
+          img.src = Container.pageSnapshot.toDataURL()
+          img.onload = () => {
+            this.setupShader(img)
+            this.webglInitialized = true
+          }
+        }
+
+        setupShader(image) {
+          const gl = this.gl
+
+          const vsSource = `
+        attribute vec2 a_position;
+        attribute vec2 a_texcoord;
+        varying vec2 v_texcoord;
+
+        void main() {
+          gl_Position = vec4(a_position, 0, 1);
+          v_texcoord = a_texcoord;
+        }
+      `
+
+          const fsSource = `
+        precision mediump float;
+        uniform sampler2D u_image;
+        uniform vec2 u_resolution;
+          uniform vec2 u_textureSize;
+          uniform float u_scrollY;
+          uniform float u_pageHeight;
+          uniform float u_viewportHeight;
+          uniform float u_blurRadius;
+          uniform float u_borderRadius;
+          uniform vec2 u_containerPosition;
+          uniform float u_warp;
+          uniform float u_edgeIntensity;
+          uniform float u_rimIntensity;
+          uniform float u_baseIntensity;
+          uniform float u_edgeDistance;
+          uniform float u_rimDistance;
+          uniform float u_baseDistance;
+          uniform float u_cornerBoost;
+          uniform float u_rippleEffect;
+          uniform float u_tintOpacity;
+        varying vec2 v_texcoord;
+
+          // Function to calculate distance from rounded rectangle edge
+          float roundedRectDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = size * 0.5;
+            vec2 pixelCoord = coord * size;
+            vec2 toCorner = abs(pixelCoord - center) - (center - radius);
+            float outsideCorner = length(max(toCorner, 0.0));
+            float insideCorner = min(max(toCorner.x, toCorner.y), 0.0);
+            return (outsideCorner + insideCorner - radius);
+          }
+          
+          // Function to calculate distance from circle edge (negative inside, positive outside)
+          float circleDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = vec2(0.5, 0.5);
+            vec2 pixelCoord = coord * size;
+            vec2 centerPixel = center * size;
+            float distFromCenter = length(pixelCoord - centerPixel);
+            return distFromCenter - radius;
+          }
+          
+          // Check if this is a pill (border radius is approximately 50% of height AND width > height)
+          bool isPill(vec2 size, float radius) {
+            float heightRatioDiff = abs(radius - size.y * 0.5);
+            bool radiusMatchesHeight = heightRatioDiff < 2.0;
+            bool isWiderThanTall = size.x > size.y + 4.0; // Must be significantly wider
+            return radiusMatchesHeight && isWiderThanTall;
+          }
+          
+          // Check if this is a circle (border radius is approximately 50% of smaller dimension AND roughly square)
+          bool isCircle(vec2 size, float radius) {
+            float minDim = min(size.x, size.y);
+            bool radiusMatchesMinDim = abs(radius - minDim * 0.5) < 1.0;
+            bool isRoughlySquare = abs(size.x - size.y) < 4.0; // Width and height are similar
+            return radiusMatchesMinDim && isRoughlySquare;
+          }
+          
+          // Function to calculate distance from pill edge (capsule shape)
+          float pillDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = size * 0.5;
+            vec2 pixelCoord = coord * size;
+            
+            // Proper capsule: line segment with radius
+            // The capsule axis runs horizontally from (radius, center.y) to (size.x - radius, center.y)
+            vec2 capsuleStart = vec2(radius, center.y);
+            vec2 capsuleEnd = vec2(size.x - radius, center.y);
+            
+            // Project point onto the capsule axis (line segment)
+            vec2 capsuleAxis = capsuleEnd - capsuleStart;
+            float capsuleLength = length(capsuleAxis);
+            
+            if (capsuleLength > 0.0) {
+              vec2 toPoint = pixelCoord - capsuleStart;
+              float t = clamp(dot(toPoint, capsuleAxis) / dot(capsuleAxis, capsuleAxis), 0.0, 1.0);
+              vec2 closestPointOnAxis = capsuleStart + t * capsuleAxis;
+              return length(pixelCoord - closestPointOnAxis) - radius;
+            } else {
+              // Degenerate case: just a circle
+              return length(pixelCoord - center) - radius;
+            }
+          }
+
+        void main() {
+            vec2 coord = v_texcoord;
+            
+            // Calculate which area of the page should be visible through the container
+            float scrollY = u_scrollY;
+            vec2 containerSize = u_resolution;
+            vec2 textureSize = u_textureSize;
+            
+            // Container position in viewport coordinates
+            vec2 containerCenter = u_containerPosition + vec2(0.0, scrollY);
+            
+            // Convert container coordinates to page coordinates
+            vec2 containerOffset = (coord - 0.5) * containerSize;
+            vec2 pagePixel = containerCenter + containerOffset;
+            
+            // Convert to texture coordinate (0 to 1)
+            vec2 textureCoord = pagePixel / textureSize;
+            
+            // Glass refraction effects
+            float distFromEdgeShape;
+            vec2 shapeNormal; // Normal vector pointing away from shape surface
+            
+            if (isPill(u_resolution, u_borderRadius)) {
+              distFromEdgeShape = -pillDistance(coord, u_resolution, u_borderRadius);
+              
+              // Calculate normal for pill shape
+              vec2 center = vec2(0.5, 0.5);
+              vec2 pixelCoord = coord * u_resolution;
+              vec2 capsuleStart = vec2(u_borderRadius, center.y * u_resolution.y);
+              vec2 capsuleEnd = vec2(u_resolution.x - u_borderRadius, center.y * u_resolution.y);
+              vec2 capsuleAxis = capsuleEnd - capsuleStart;
+              float capsuleLength = length(capsuleAxis);
+              
+              if (capsuleLength > 0.0) {
+                vec2 toPoint = pixelCoord - capsuleStart;
+                float t = clamp(dot(toPoint, capsuleAxis) / dot(capsuleAxis, capsuleAxis), 0.0, 1.0);
+                vec2 closestPointOnAxis = capsuleStart + t * capsuleAxis;
+                vec2 normalDir = pixelCoord - closestPointOnAxis;
+                shapeNormal = length(normalDir) > 0.0 ? normalize(normalDir) : vec2(0.0, 1.0);
+              } else {
+                shapeNormal = normalize(coord - center);
+              }
+            } else if (isCircle(u_resolution, u_borderRadius)) {
+              distFromEdgeShape = -circleDistance(coord, u_resolution, u_borderRadius);
+              vec2 center = vec2(0.5, 0.5);
+              shapeNormal = normalize(coord - center);
+            } else {
+              distFromEdgeShape = -roundedRectDistance(coord, u_resolution, u_borderRadius);
+          vec2 center = vec2(0.5, 0.5);
+              shapeNormal = normalize(coord - center);
+            }
+            distFromEdgeShape = max(distFromEdgeShape, 0.0);
+            
+            float distFromLeft = coord.x;
+            float distFromRight = 1.0 - coord.x;
+            float distFromTop = coord.y;
+            float distFromBottom = 1.0 - coord.y;
+            float distFromEdge = distFromEdgeShape / min(u_resolution.x, u_resolution.y);
+            
+            // Smooth glass refraction using shape-aware normal
+            float normalizedDistance = distFromEdge * min(u_resolution.x, u_resolution.y);
+            float baseIntensity = 1.0 - exp(-normalizedDistance * u_baseDistance);
+            float edgeIntensity = exp(-normalizedDistance * u_edgeDistance);
+            float rimIntensity = exp(-normalizedDistance * u_rimDistance);
+            
+            // Apply center warping only if warp is enabled, keep edge and rim effects always
+            float baseComponent = u_warp > 0.5 ? baseIntensity * u_baseIntensity : 0.0;
+            float totalIntensity = baseComponent + edgeIntensity * u_edgeIntensity + rimIntensity * u_rimIntensity;
+            
+            vec2 baseRefraction = shapeNormal * totalIntensity;
+            
+            float cornerProximityX = min(distFromLeft, distFromRight);
+            float cornerProximityY = min(distFromTop, distFromBottom);
+            float cornerDistance = max(cornerProximityX, cornerProximityY);
+            float cornerNormalized = cornerDistance * min(u_resolution.x, u_resolution.y);
+            
+            float cornerBoost = exp(-cornerNormalized * 0.3) * u_cornerBoost;
+            vec2 cornerRefraction = shapeNormal * cornerBoost;
+            
+            vec2 perpendicular = vec2(-shapeNormal.y, shapeNormal.x);
+            float rippleEffect = sin(distFromEdge * 25.0) * u_rippleEffect * rimIntensity;
+            vec2 textureRefraction = perpendicular * rippleEffect;
+            
+            vec2 totalRefraction = baseRefraction + cornerRefraction + textureRefraction;
+            textureCoord += totalRefraction;
+            
+            // Gaussian blur
+            vec4 color = vec4(0.0);
+            vec2 texelSize = 1.0 / u_textureSize;
+            float sigma = u_blurRadius / 2.0;
+            vec2 blurStep = texelSize * sigma;
+            
+            float totalWeight = 0.0;
+            
+            for(float i = -6.0; i <= 6.0; i += 1.0) {
+              for(float j = -6.0; j <= 6.0; j += 1.0) {
+                float distance = length(vec2(i, j));
+                if(distance > 6.0) continue;
+                
+                float weight = exp(-(distance * distance) / (2.0 * sigma * sigma));
+                
+                vec2 offset = vec2(i, j) * blurStep;
+                color += texture2D(u_image, textureCoord + offset) * weight;
+                totalWeight += weight;
+              }
+            }
+            
+            color /= totalWeight;
+            
+            // Simple vertical gradient
+            float gradientPosition = coord.y;
+            vec3 topTint = vec3(1.0, 1.0, 1.0);
+            vec3 bottomTint = vec3(0.7, 0.7, 0.7);
+            vec3 gradientTint = mix(topTint, bottomTint, gradientPosition);
+            vec3 tintedColor = mix(color.rgb, gradientTint, u_tintOpacity);
+            color = vec4(tintedColor, color.a);
+            
+            // Sampled gradient
+            vec2 viewportCenter = containerCenter;
+            float topY = (viewportCenter.y - containerSize.y * 0.4) / textureSize.y;
+            float midY = viewportCenter.y / textureSize.y;
+            float bottomY = (viewportCenter.y + containerSize.y * 0.4) / textureSize.y;
+            
+            vec3 topColor = vec3(0.0);
+            vec3 midColor = vec3(0.0);
+            vec3 bottomColor = vec3(0.0);
+            
+            float sampleCount = 0.0;
+            for(float x = 0.0; x < 1.0; x += 0.05) {
+              for(float yOffset = -5.0; yOffset <= 5.0; yOffset += 1.0) {
+                vec2 topSample = vec2(x, topY + yOffset * texelSize.y);
+                vec2 midSample = vec2(x, midY + yOffset * texelSize.y);
+                vec2 bottomSample = vec2(x, bottomY + yOffset * texelSize.y);
+                
+                topColor += texture2D(u_image, topSample).rgb;
+                midColor += texture2D(u_image, midSample).rgb;
+                bottomColor += texture2D(u_image, bottomSample).rgb;
+                sampleCount += 1.0;
+              }
+            }
+            
+            topColor /= sampleCount;
+            midColor /= sampleCount;
+            bottomColor /= sampleCount;
+            
+            vec3 sampledGradient;
+            if (gradientPosition < 0.1) {
+              sampledGradient = topColor;
+            } else if (gradientPosition > 0.9) {
+              sampledGradient = bottomColor;
+            } else {
+              float transitionPos = (gradientPosition - 0.1) / 0.8;
+              if (transitionPos < 0.5) {
+                float t = transitionPos * 2.0;
+                sampledGradient = mix(topColor, midColor, t);
+              } else {
+                float t = (transitionPos - 0.5) * 2.0;
+                sampledGradient = mix(midColor, bottomColor, t);
+              }
+            }
+            
+            vec3 finalTinted = mix(color.rgb, sampledGradient, u_tintOpacity * 0.3);
+            color = vec4(finalTinted, color.a);
+            
+            // Shape mask (rounded rectangle, circle, or pill)
+            float maskDistance;
+            if (isPill(u_resolution, u_borderRadius)) {
+              maskDistance = pillDistance(coord, u_resolution, u_borderRadius);
+            } else if (isCircle(u_resolution, u_borderRadius)) {
+              maskDistance = circleDistance(coord, u_resolution, u_borderRadius);
+            } else {
+              maskDistance = roundedRectDistance(coord, u_resolution, u_borderRadius);
+            }
+            float mask = 1.0 - smoothstep(-1.0, 1.0, maskDistance);
+            
+            gl_FragColor = vec4(color.rgb, mask);
+          }
+        `
+
+          const program = this.createProgram(gl, vsSource, fsSource)
+          if (!program) return
+
+          gl.useProgram(program)
+
+          // Set up geometry
+          const positionBuffer = gl.createBuffer()
+          gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
+
+          const texcoordBuffer = gl.createBuffer()
+          gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer)
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0]), gl.STATIC_DRAW)
+
+          // Get locations
+          const positionLoc = gl.getAttribLocation(program, 'a_position')
+          const texcoordLoc = gl.getAttribLocation(program, 'a_texcoord')
+          const resolutionLoc = gl.getUniformLocation(program, 'u_resolution')
+          const textureSizeLoc = gl.getUniformLocation(program, 'u_textureSize')
+          const scrollYLoc = gl.getUniformLocation(program, 'u_scrollY')
+          const pageHeightLoc = gl.getUniformLocation(program, 'u_pageHeight')
+          const viewportHeightLoc = gl.getUniformLocation(program, 'u_viewportHeight')
+          const blurRadiusLoc = gl.getUniformLocation(program, 'u_blurRadius')
+          const borderRadiusLoc = gl.getUniformLocation(program, 'u_borderRadius')
+          const containerPositionLoc = gl.getUniformLocation(program, 'u_containerPosition')
+          const warpLoc = gl.getUniformLocation(program, 'u_warp')
+          const edgeIntensityLoc = gl.getUniformLocation(program, 'u_edgeIntensity')
+          const rimIntensityLoc = gl.getUniformLocation(program, 'u_rimIntensity')
+          const baseIntensityLoc = gl.getUniformLocation(program, 'u_baseIntensity')
+          const edgeDistanceLoc = gl.getUniformLocation(program, 'u_edgeDistance')
+          const rimDistanceLoc = gl.getUniformLocation(program, 'u_rimDistance')
+          const baseDistanceLoc = gl.getUniformLocation(program, 'u_baseDistance')
+          const cornerBoostLoc = gl.getUniformLocation(program, 'u_cornerBoost')
+          const rippleEffectLoc = gl.getUniformLocation(program, 'u_rippleEffect')
+          const tintOpacityLoc = gl.getUniformLocation(program, 'u_tintOpacity')
+          const imageLoc = gl.getUniformLocation(program, 'u_image')
+
+          // Create texture
+          const texture = gl.createTexture()
+          gl.bindTexture(gl.TEXTURE_2D, texture)
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+
+          // Store references
+          this.gl_refs = {
+            gl,
+            texture,
+            textureSizeLoc,
+            scrollYLoc,
+            positionLoc,
+            texcoordLoc,
+            resolutionLoc,
+            pageHeightLoc,
+            viewportHeightLoc,
+            blurRadiusLoc,
+            borderRadiusLoc,
+            containerPositionLoc,
+            warpLoc,
+            edgeIntensityLoc,
+            rimIntensityLoc,
+            baseIntensityLoc,
+            edgeDistanceLoc,
+            rimDistanceLoc,
+            baseDistanceLoc,
+            cornerBoostLoc,
+            rippleEffectLoc,
+            tintOpacityLoc,
+            imageLoc,
+            positionBuffer,
+            texcoordBuffer
+          }
+
+          // Set up viewport and attributes
+          gl.viewport(0, 0, this.canvas.width, this.canvas.height)
+          gl.clearColor(0, 0, 0, 0)
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+          gl.enableVertexAttribArray(positionLoc)
+          gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0)
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer)
+          gl.enableVertexAttribArray(texcoordLoc)
+          gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0)
+
+          // Set uniforms
+          gl.uniform2f(resolutionLoc, this.canvas.width, this.canvas.height)
+          gl.uniform2f(textureSizeLoc, image.width, image.height)
+          gl.uniform1f(blurRadiusLoc, window.glassControls?.blurRadius || 5.0)
+          gl.uniform1f(borderRadiusLoc, this.borderRadius)
+          gl.uniform1f(warpLoc, this.warp ? 1.0 : 0.0)
+          gl.uniform1f(edgeIntensityLoc, window.glassControls?.edgeIntensity || 0.01)
+          gl.uniform1f(rimIntensityLoc, window.glassControls?.rimIntensity || 0.05)
+          gl.uniform1f(baseIntensityLoc, window.glassControls?.baseIntensity || 0.01)
+          gl.uniform1f(edgeDistanceLoc, window.glassControls?.edgeDistance || 0.15)
+          gl.uniform1f(rimDistanceLoc, window.glassControls?.rimDistance || 0.8)
+          gl.uniform1f(baseDistanceLoc, window.glassControls?.baseDistance || 0.1)
+          gl.uniform1f(cornerBoostLoc, window.glassControls?.cornerBoost || 0.02)
+          gl.uniform1f(rippleEffectLoc, window.glassControls?.rippleEffect || 0.1)
+          gl.uniform1f(tintOpacityLoc, window.glassControls?.tintOpacity || 0.2)
+
+          // Set initial position (will be updated in render loop)
+          const position = this.getPosition()
+          gl.uniform2f(containerPositionLoc, position.x, position.y)
+
+          const pageHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+          const viewportHeight = window.innerHeight
+          gl.uniform1f(pageHeightLoc, pageHeight)
+          gl.uniform1f(viewportHeightLoc, viewportHeight)
+
+          gl.activeTexture(gl.TEXTURE0)
+          gl.bindTexture(gl.TEXTURE_2D, texture)
+          gl.uniform1i(imageLoc, 0)
+
+          // Start rendering
+          this.startRenderLoop()
+        }
+
+        startRenderLoop() {
+          const render = () => {
+            if (!this.gl_refs.gl) return
+
+            const gl = this.gl_refs.gl
+            gl.clear(gl.COLOR_BUFFER_BIT)
+
+            // Update scroll position
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop
+            gl.uniform1f(this.gl_refs.scrollYLoc, scrollY)
+
+            // Update container position (in case it moved)
+            const position = this.getPosition()
+            gl.uniform2f(this.gl_refs.containerPositionLoc, position.x, position.y)
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6)
+          }
+
+          render()
+
+          const handleScroll = () => render()
+          window.addEventListener('scroll', handleScroll, { passive: true })
+
+          // Store render function for external calls
+          this.render = render
+        }
+
+        createProgram(gl, vsSource, fsSource) {
+          const vs = this.compileShader(gl, gl.VERTEX_SHADER, vsSource)
+          const fs = this.compileShader(gl, gl.FRAGMENT_SHADER, fsSource)
+          if (!vs || !fs) return null
+
+          const program = gl.createProgram()
+          gl.attachShader(program, vs)
+          gl.attachShader(program, fs)
+          gl.linkProgram(program)
+
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.error('Program link error:', gl.getProgramInfoLog(program))
+            return null
+          }
+
+          return program
+        }
+
+        compileShader(gl, type, source) {
+          const shader = gl.createShader(type)
+          gl.shaderSource(shader, source)
+          gl.compileShader(shader)
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error('Shader compile error:', gl.getShaderInfoLog(shader))
+            return null
+          }
+          return shader
+        }
+      }
+
+      class Button extends Container {
+        constructor(options = {}) {
+          const text = options.text || 'Button'
+          const fontSize = parseInt(options.size) || 48
+          const onClick = options.onClick || null
+          const type = options.type || 'rounded' // "rounded", "circle", or "pill"
+          const warp = options.warp !== undefined ? options.warp : false // Center warping disabled by default
+
+          // Call parent constructor (border radius will be set in setSizeFromText)
+          super({
+            borderRadius: fontSize
+          })
+
+          this.text = text
+          this.fontSize = fontSize
+          this.onClick = onClick
+          this.type = type
+          this.warp = warp
+          this.parent = null // Will be set if added to container
+          this.isNestedGlass = false
+
+          // Add button-specific styling and content
+          this.element.classList.add('glass-button')
+          if (this.type === 'circle') {
+            this.element.classList.add('glass-button-circle')
+          }
+          this.createTextElement()
+          this.setupClickHandler()
+          this.setSizeFromText()
+        }
+
+        setSizeFromText() {
+          let width, height
+
+          // Handle different button types
+          if (this.type === 'circle') {
+            // For circles, use 2.5x the fontSize for both dimensions
+            const circleSize = this.fontSize * 2.5
+            width = circleSize
+            height = circleSize
+            this.borderRadius = circleSize / 2 // 50% for perfect circle
+
+            // Force exact square dimensions for circles
+            this.element.style.width = width + 'px'
+            this.element.style.height = height + 'px'
+            this.element.style.minWidth = width + 'px'
+            this.element.style.minHeight = height + 'px'
+            this.element.style.maxWidth = width + 'px'
+            this.element.style.maxHeight = height + 'px'
+          } else if (this.type === 'pill') {
+            // For pill buttons, calculate height first, then set border radius to half height for true capsule shape
+            const textMetrics = Button.measureText(this.text, this.fontSize)
+            width = Math.ceil(textMetrics.width + this.fontSize * 2)
+            height = Math.ceil(this.fontSize + this.fontSize * 1.2) // Slightly less padding for pills
+            this.borderRadius = height / 2 // Half height for perfect capsule proportions
+            this.element.style.minWidth = width + 'px'
+            this.element.style.minHeight = height + 'px'
+          } else {
+            // For rounded buttons, calculate dimensions from text
+            const textMetrics = Button.measureText(this.text, this.fontSize)
+            width = Math.ceil(textMetrics.width + this.fontSize * 2)
+            height = Math.ceil(this.fontSize + this.fontSize * 1.5)
+            this.borderRadius = this.fontSize
+            this.element.style.minWidth = width + 'px'
+            this.element.style.minHeight = height + 'px'
+          }
+
+          // Apply border radius to element
+          this.element.style.borderRadius = this.borderRadius + 'px'
+
+          // Update canvas border radius to match
+          if (this.canvas) {
+            this.canvas.style.borderRadius = this.borderRadius + 'px'
+          }
+
+          // For circles and pills, set internal dimensions directly to ensure shader gets exact dimensions
+          if (this.type === 'circle') {
+            this.width = width
+            this.height = height
+
+            // Update canvas to exact square dimensions for perfect circle rendering
+            if (this.canvas) {
+              this.canvas.width = width
+              this.canvas.height = height
+              this.canvas.style.width = width + 'px'
+              this.canvas.style.height = height + 'px'
+
+              // Update WebGL viewport if initialized
+              if (this.gl_refs.gl) {
+                this.gl_refs.gl.viewport(0, 0, width, height)
+                this.gl_refs.gl.uniform2f(this.gl_refs.resolutionLoc, width, height)
+                this.gl_refs.gl.uniform1f(this.gl_refs.borderRadiusLoc, this.borderRadius)
+              }
+            }
+          } else if (this.type === 'pill') {
+            this.width = width
+            this.height = height
+
+            // Force exact pill dimensions for perfect capsule rendering
+            this.element.style.width = width + 'px'
+            this.element.style.height = height + 'px'
+            this.element.style.maxWidth = width + 'px'
+            this.element.style.maxHeight = height + 'px'
+
+            if (this.canvas) {
+              this.canvas.width = width
+              this.canvas.height = height
+              this.canvas.style.width = width + 'px'
+              this.canvas.style.height = height + 'px'
+
+              // Update WebGL viewport if initialized
+              if (this.gl_refs.gl) {
+                this.gl_refs.gl.viewport(0, 0, width, height)
+                this.gl_refs.gl.uniform2f(this.gl_refs.resolutionLoc, width, height)
+                this.gl_refs.gl.uniform1f(this.gl_refs.borderRadiusLoc, this.borderRadius)
+              }
+            }
+          } else {
+            // Update size from DOM after CSS applies
+            this.updateSizeFromDOM()
+          }
+        }
+
+        setupAsNestedGlass() {
+          if (this.parent && !this.isNestedGlass) {
+            this.isNestedGlass = true
+            // Reinitialize with nested glass shader when parent is ready
+            if (this.webglInitialized) {
+              this.initWebGL()
+            }
+          }
+        }
+
+        static measureText(text, fontSize) {
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          ctx.font = `${fontSize}px system-ui, -apple-system, sans-serif`
+          return ctx.measureText(text)
+        }
+
+        createTextElement() {
+          this.textElement = document.createElement('div')
+          this.textElement.className = 'glass-button-text'
+          this.textElement.textContent = this.text
+          this.textElement.style.fontSize = this.fontSize + 'px'
+
+          this.element.appendChild(this.textElement)
+        }
+
+        setupClickHandler() {
+          if (this.onClick && this.element) {
+            this.element.addEventListener('click', e => {
+              e.preventDefault()
+              this.onClick(this.text)
+            })
+          }
+        }
+
+        // Override initWebGL to choose between standalone and nested glass
+        initWebGL() {
+          if (!Container.pageSnapshot || !this.gl) return
+
+          if (this.parent && this.isNestedGlass) {
+            // Use nested glass (parent container's texture)
+            this.initNestedGlass()
+          } else {
+            // Use standalone glass (page snapshot)
+            super.initWebGL()
+          }
+        }
+
+        initNestedGlass() {
+          if (!this.parent.webglInitialized) {
+            // Parent not ready, wait and try again
+            setTimeout(() => this.initNestedGlass(), 100)
+            return
+          }
+
+          // Parent is ready, set up nested glass
+          this.setupDynamicNestedShader()
+          this.webglInitialized = true
+        }
+
+        setupDynamicNestedShader() {
+          const gl = this.gl
+
+          const vsSource = `
+          attribute vec2 a_position;
+          attribute vec2 a_texcoord;
+          varying vec2 v_texcoord;
+
+          void main() {
+            gl_Position = vec4(a_position, 0, 1);
+            v_texcoord = a_texcoord;
+          }
+        `
+
+          const fsSource = `
+          precision mediump float;
+          uniform sampler2D u_image;
+          uniform vec2 u_resolution;
+          uniform vec2 u_textureSize;
+          uniform float u_blurRadius;
+          uniform float u_borderRadius;
+          uniform vec2 u_buttonPosition;
+          uniform vec2 u_containerPosition;
+          uniform vec2 u_containerSize;
+          uniform float u_warp;
+          uniform float u_edgeIntensity;
+          uniform float u_rimIntensity;
+          uniform float u_baseIntensity;
+          uniform float u_edgeDistance;
+          uniform float u_rimDistance;
+          uniform float u_baseDistance;
+          uniform float u_cornerBoost;
+          uniform float u_rippleEffect;
+          uniform float u_tintOpacity;
+          varying vec2 v_texcoord;
+
+          // Function to calculate distance from rounded rectangle edge
+          float roundedRectDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = size * 0.5;
+            vec2 pixelCoord = coord * size;
+            vec2 toCorner = abs(pixelCoord - center) - (center - radius);
+            float outsideCorner = length(max(toCorner, 0.0));
+            float insideCorner = min(max(toCorner.x, toCorner.y), 0.0);
+            return (outsideCorner + insideCorner - radius);
+          }
+          
+          // Function to calculate distance from circle edge (negative inside, positive outside)
+          float circleDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = vec2(0.5, 0.5);
+            vec2 pixelCoord = coord * size;
+            vec2 centerPixel = center * size;
+            float distFromCenter = length(pixelCoord - centerPixel);
+            return distFromCenter - radius;
+          }
+          
+          // Check if this is a pill (border radius is approximately 50% of height AND width > height)
+          bool isPill(vec2 size, float radius) {
+            float heightRatioDiff = abs(radius - size.y * 0.5);
+            bool radiusMatchesHeight = heightRatioDiff < 2.0;
+            bool isWiderThanTall = size.x > size.y + 4.0; // Must be significantly wider
+            return radiusMatchesHeight && isWiderThanTall;
+          }
+          
+          // Check if this is a circle (border radius is approximately 50% of smaller dimension AND roughly square)
+          bool isCircle(vec2 size, float radius) {
+            float minDim = min(size.x, size.y);
+            bool radiusMatchesMinDim = abs(radius - minDim * 0.5) < 1.0;
+            bool isRoughlySquare = abs(size.x - size.y) < 4.0; // Width and height are similar
+            return radiusMatchesMinDim && isRoughlySquare;
+          }
+          
+          // Function to calculate distance from pill edge (capsule shape)
+          float pillDistance(vec2 coord, vec2 size, float radius) {
+            vec2 center = size * 0.5;
+            vec2 pixelCoord = coord * size;
+            
+            // Proper capsule: line segment with radius
+            // The capsule axis runs horizontally from (radius, center.y) to (size.x - radius, center.y)
+            vec2 capsuleStart = vec2(radius, center.y);
+            vec2 capsuleEnd = vec2(size.x - radius, center.y);
+            
+            // Project point onto the capsule axis (line segment)
+            vec2 capsuleAxis = capsuleEnd - capsuleStart;
+            float capsuleLength = length(capsuleAxis);
+            
+            if (capsuleLength > 0.0) {
+              vec2 toPoint = pixelCoord - capsuleStart;
+              float t = clamp(dot(toPoint, capsuleAxis) / dot(capsuleAxis, capsuleAxis), 0.0, 1.0);
+              vec2 closestPointOnAxis = capsuleStart + t * capsuleAxis;
+              return length(pixelCoord - closestPointOnAxis) - radius;
+            } else {
+              // Degenerate case: just a circle
+              return length(pixelCoord - center) - radius;
+            }
+          }
+
+          void main() {
+            vec2 coord = v_texcoord;
+            
+            // Calculate button position within container space
+            vec2 buttonSize = u_resolution;
+            vec2 containerSize = u_containerSize;
+            
+            // Convert screen positions to container-relative coordinates
+            // Container position is center, convert to top-left
+            vec2 containerTopLeft = u_containerPosition - containerSize * 0.5;
+            vec2 buttonTopLeft = u_buttonPosition - buttonSize * 0.5;
+            
+            // Get button's position relative to container's top-left
+            vec2 buttonRelativePos = buttonTopLeft - containerTopLeft;
+            
+            // Current pixel position within the button (0 to buttonSize)
+            vec2 buttonPixel = coord * buttonSize;
+            
+            // Absolute pixel position in container space
+            vec2 containerPixel = buttonRelativePos + buttonPixel;
+            
+            // Convert to texture coordinates (0 to 1)
+            vec2 baseTextureCoord = containerPixel / containerSize;
+            
+            // BUTTON'S SOPHISTICATED GLASS EFFECTS on top of container's glass
+            float distFromEdgeShape;
+            vec2 shapeNormal; // Normal vector pointing away from shape surface
+            
+            if (isPill(u_resolution, u_borderRadius)) {
+              distFromEdgeShape = -pillDistance(coord, u_resolution, u_borderRadius);
+              
+              // Calculate normal for pill shape
+              vec2 center = vec2(0.5, 0.5);
+              vec2 pixelCoord = coord * u_resolution;
+              vec2 capsuleStart = vec2(u_borderRadius, center.y * u_resolution.y);
+              vec2 capsuleEnd = vec2(u_resolution.x - u_borderRadius, center.y * u_resolution.y);
+              vec2 capsuleAxis = capsuleEnd - capsuleStart;
+              float capsuleLength = length(capsuleAxis);
+              
+              if (capsuleLength > 0.0) {
+                vec2 toPoint = pixelCoord - capsuleStart;
+                float t = clamp(dot(toPoint, capsuleAxis) / dot(capsuleAxis, capsuleAxis), 0.0, 1.0);
+                vec2 closestPointOnAxis = capsuleStart + t * capsuleAxis;
+                vec2 normalDir = pixelCoord - closestPointOnAxis;
+                shapeNormal = length(normalDir) > 0.0 ? normalize(normalDir) : vec2(0.0, 1.0);
+              } else {
+                shapeNormal = normalize(coord - center);
+              }
+            } else if (isCircle(u_resolution, u_borderRadius)) {
+              distFromEdgeShape = -circleDistance(coord, u_resolution, u_borderRadius);
+              vec2 center = vec2(0.5, 0.5);
+              shapeNormal = normalize(coord - center);
+            } else {
+              distFromEdgeShape = -roundedRectDistance(coord, u_resolution, u_borderRadius);
+              vec2 center = vec2(0.5, 0.5);
+              shapeNormal = normalize(coord - center);
+            }
+            distFromEdgeShape = max(distFromEdgeShape, 0.0);
+            
+            float distFromLeft = coord.x;
+            float distFromRight = 1.0 - coord.x;
+            float distFromTop = coord.y;
+            float distFromBottom = 1.0 - coord.y;
+            float distFromEdge = distFromEdgeShape / min(u_resolution.x, u_resolution.y);
+            
+            // MULTI-LAYER BUTTON GLASS REFRACTION using shape-aware normal
+            float normalizedDistance = distFromEdge * min(u_resolution.x, u_resolution.y);
+            float baseIntensity = 1.0 - exp(-normalizedDistance * u_baseDistance);
+            float edgeIntensity = exp(-normalizedDistance * u_edgeDistance);
+            float rimIntensity = exp(-normalizedDistance * u_rimDistance);
+            
+            // Apply center warping only if warp is enabled, keep edge and rim effects always
+            float baseComponent = u_warp > 0.5 ? baseIntensity * u_baseIntensity : 0.0;
+            float totalIntensity = baseComponent + edgeIntensity * u_edgeIntensity + rimIntensity * u_rimIntensity;
+            
+            vec2 baseRefraction = shapeNormal * totalIntensity;
+            
+            // Corner enhancement for buttons
+            float cornerProximityX = min(distFromLeft, distFromRight);
+            float cornerProximityY = min(distFromTop, distFromBottom);
+            float cornerDistance = max(cornerProximityX, cornerProximityY);
+            float cornerNormalized = cornerDistance * min(u_resolution.x, u_resolution.y);
+            
+            float cornerBoost = exp(-cornerNormalized * 0.3) * u_cornerBoost;
+            vec2 cornerRefraction = shapeNormal * cornerBoost;
+            
+            // Button ripple texture
+            vec2 perpendicular = vec2(-shapeNormal.y, shapeNormal.x);
+            float rippleEffect = sin(distFromEdge * 30.0) * u_rippleEffect * rimIntensity;
+            vec2 textureRefraction = perpendicular * rippleEffect;
+            
+            vec2 totalRefraction = baseRefraction + cornerRefraction + textureRefraction;
+            vec2 textureCoord = baseTextureCoord + totalRefraction;
+            
+            // HIGH-QUALITY BUTTON BLUR on container texture
+            vec4 color = vec4(0.0);
+            vec2 texelSize = 1.0 / containerSize;
+            float sigma = u_blurRadius / 3.0; // More substantial blur
+            vec2 blurStep = texelSize * sigma;
+            
+            float totalWeight = 0.0;
+            
+            // 9x9 blur for buttons (more samples for quality)
+            for(float i = -4.0; i <= 4.0; i += 1.0) {
+              for(float j = -4.0; j <= 4.0; j += 1.0) {
+                float distance = length(vec2(i, j));
+                if(distance > 4.0) continue;
+                
+                float weight = exp(-(distance * distance) / (2.0 * sigma * sigma));
+                
+                vec2 offset = vec2(i, j) * blurStep;
+                color += texture2D(u_image, textureCoord + offset) * weight;
+                totalWeight += weight;
+              }
+            }
+            
+            color /= totalWeight;
+            
+            // BUTTON'S OWN GRADIENT LAYERS (same sophistication as container)
+            float gradientPosition = coord.y;
+            
+            // Primary button gradient
+            vec3 topTint = vec3(1.0, 1.0, 1.0);
+            vec3 bottomTint = vec3(0.7, 0.7, 0.7);
+            vec3 gradientTint = mix(topTint, bottomTint, gradientPosition);
+            vec3 tintedColor = mix(color.rgb, gradientTint, u_tintOpacity * 0.7);
+            color = vec4(tintedColor, color.a);
+            
+            // SECOND BUTTON GRADIENT - sampling from container's texture for variation
+            vec2 viewportCenter = u_buttonPosition;
+            float topY = max(0.0, (viewportCenter.y - buttonSize.y * 0.4) / containerSize.y);
+            float midY = viewportCenter.y / containerSize.y;
+            float bottomY = min(1.0, (viewportCenter.y + buttonSize.y * 0.4) / containerSize.y);
+            
+            vec3 topColor = texture2D(u_image, vec2(0.5, topY)).rgb;
+            vec3 midColor = texture2D(u_image, vec2(0.5, midY)).rgb;
+            vec3 bottomColor = texture2D(u_image, vec2(0.5, bottomY)).rgb;
+            
+            vec3 sampledGradient;
+            if (gradientPosition < 0.1) {
+              sampledGradient = topColor;
+            } else if (gradientPosition > 0.9) {
+              sampledGradient = bottomColor;
+            } else {
+              float transitionPos = (gradientPosition - 0.1) / 0.8;
+              if (transitionPos < 0.5) {
+                float t = transitionPos * 2.0;
+                sampledGradient = mix(topColor, midColor, t);
+              } else {
+                float t = (transitionPos - 0.5) * 2.0;
+                sampledGradient = mix(midColor, bottomColor, t);
+              }
+            }
+            
+            vec3 secondTinted = mix(color.rgb, sampledGradient, u_tintOpacity * 0.4);
+            
+            // Button highlighting/shadow system
+            vec3 buttonTopTint = vec3(1.08, 1.08, 1.08);    
+            vec3 buttonBottomTint = vec3(0.92, 0.92, 0.92); 
+            vec3 buttonGradient = mix(buttonTopTint, buttonBottomTint, gradientPosition);
+            vec3 finalTinted = secondTinted * buttonGradient;
+            
+            // Shape mask (rounded rectangle, circle, or pill)
+            float maskDistance;
+            if (isPill(u_resolution, u_borderRadius)) {
+              maskDistance = pillDistance(coord, u_resolution, u_borderRadius);
+            } else if (isCircle(u_resolution, u_borderRadius)) {
+              maskDistance = circleDistance(coord, u_resolution, u_borderRadius);
+            } else {
+              maskDistance = roundedRectDistance(coord, u_resolution, u_borderRadius);
+            }
+            float mask = 1.0 - smoothstep(-1.0, 1.0, maskDistance);
+            
+            gl_FragColor = vec4(finalTinted, mask);
+          }
+        `
+
+          const program = this.createProgram(gl, vsSource, fsSource)
+          if (!program) return
+
+          gl.useProgram(program)
+
+          // Set up geometry (same as parent)
+          const positionBuffer = gl.createBuffer()
+          gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
+
+          const texcoordBuffer = gl.createBuffer()
+          gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer)
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0]), gl.STATIC_DRAW)
+
+          // Get locations
+          const positionLoc = gl.getAttribLocation(program, 'a_position')
+          const texcoordLoc = gl.getAttribLocation(program, 'a_texcoord')
+          const resolutionLoc = gl.getUniformLocation(program, 'u_resolution')
+          const textureSizeLoc = gl.getUniformLocation(program, 'u_textureSize')
+          const blurRadiusLoc = gl.getUniformLocation(program, 'u_blurRadius')
+          const borderRadiusLoc = gl.getUniformLocation(program, 'u_borderRadius')
+          const buttonPositionLoc = gl.getUniformLocation(program, 'u_buttonPosition')
+          const containerPositionLoc = gl.getUniformLocation(program, 'u_containerPosition')
+          const containerSizeLoc = gl.getUniformLocation(program, 'u_containerSize')
+          const warpLoc = gl.getUniformLocation(program, 'u_warp')
+          const edgeIntensityLoc = gl.getUniformLocation(program, 'u_edgeIntensity')
+          const rimIntensityLoc = gl.getUniformLocation(program, 'u_rimIntensity')
+          const baseIntensityLoc = gl.getUniformLocation(program, 'u_baseIntensity')
+          const edgeDistanceLoc = gl.getUniformLocation(program, 'u_edgeDistance')
+          const rimDistanceLoc = gl.getUniformLocation(program, 'u_rimDistance')
+          const baseDistanceLoc = gl.getUniformLocation(program, 'u_baseDistance')
+          const cornerBoostLoc = gl.getUniformLocation(program, 'u_cornerBoost')
+          const rippleEffectLoc = gl.getUniformLocation(program, 'u_rippleEffect')
+          const tintOpacityLoc = gl.getUniformLocation(program, 'u_tintOpacity')
+          const imageLoc = gl.getUniformLocation(program, 'u_image')
+
+          // Create texture that will be updated dynamically from container canvas
+          const texture = gl.createTexture()
+          gl.bindTexture(gl.TEXTURE_2D, texture)
+
+          // Initialize with parent container's current canvas size
+          const containerCanvas = this.parent.canvas
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            containerCanvas.width,
+            containerCanvas.height,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            null
+          )
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+
+          // Store references
+          this.gl_refs = {
+            gl,
+            texture,
+            textureSizeLoc,
+            positionLoc,
+            texcoordLoc,
+            resolutionLoc,
+            blurRadiusLoc,
+            borderRadiusLoc,
+            buttonPositionLoc,
+            containerPositionLoc,
+            containerSizeLoc,
+            warpLoc,
+            edgeIntensityLoc,
+            rimIntensityLoc,
+            baseIntensityLoc,
+            edgeDistanceLoc,
+            rimDistanceLoc,
+            baseDistanceLoc,
+            cornerBoostLoc,
+            rippleEffectLoc,
+            tintOpacityLoc,
+            imageLoc,
+            positionBuffer,
+            texcoordBuffer
+          }
+
+          // Set up viewport and attributes
+          gl.viewport(0, 0, this.canvas.width, this.canvas.height)
+          gl.clearColor(0, 0, 0, 0)
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+          gl.enableVertexAttribArray(positionLoc)
+          gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0)
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer)
+          gl.enableVertexAttribArray(texcoordLoc)
+          gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0)
+
+          // Set uniforms
+          gl.uniform2f(resolutionLoc, this.canvas.width, this.canvas.height)
+          gl.uniform2f(textureSizeLoc, containerCanvas.width, containerCanvas.height)
+          gl.uniform1f(blurRadiusLoc, window.glassControls?.blurRadius || 2.0) // Controlled blur for sharpness
+          gl.uniform1f(borderRadiusLoc, this.borderRadius)
+          gl.uniform1f(warpLoc, this.warp ? 1.0 : 0.0)
+          gl.uniform1f(edgeIntensityLoc, window.glassControls?.edgeIntensity || 0.01)
+          gl.uniform1f(rimIntensityLoc, window.glassControls?.rimIntensity || 0.05)
+          gl.uniform1f(baseIntensityLoc, window.glassControls?.baseIntensity || 0.01)
+          gl.uniform1f(edgeDistanceLoc, window.glassControls?.edgeDistance || 0.15)
+          gl.uniform1f(rimDistanceLoc, window.glassControls?.rimDistance || 0.8)
+          gl.uniform1f(baseDistanceLoc, window.glassControls?.baseDistance || 0.1)
+          gl.uniform1f(cornerBoostLoc, window.glassControls?.cornerBoost || 0.02)
+          gl.uniform1f(rippleEffectLoc, window.glassControls?.rippleEffect || 0.1)
+          gl.uniform1f(tintOpacityLoc, window.glassControls?.tintOpacity || 0.2)
+
+          // Set positions
+          const buttonPosition = this.getPosition()
+          const containerPosition = this.parent.getPosition()
+          gl.uniform2f(buttonPositionLoc, buttonPosition.x, buttonPosition.y)
+          gl.uniform2f(containerPositionLoc, containerPosition.x, containerPosition.y)
+          gl.uniform2f(containerSizeLoc, this.parent.width, this.parent.height)
+
+          gl.activeTexture(gl.TEXTURE0)
+          gl.bindTexture(gl.TEXTURE_2D, texture)
+          gl.uniform1i(imageLoc, 0)
+
+          // Start rendering
+          this.startNestedRenderLoop()
+        }
+
+        startNestedRenderLoop() {
+          const render = () => {
+            if (!this.gl_refs.gl || !this.parent) return
+
+            const gl = this.gl_refs.gl
+
+            // UPDATE TEXTURE FROM PARENT CONTAINER'S CURRENT RENDERED OUTPUT
+            const containerCanvas = this.parent.canvas
+            gl.bindTexture(gl.TEXTURE_2D, this.gl_refs.texture)
+            gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, containerCanvas)
+
+            gl.clear(gl.COLOR_BUFFER_BIT)
+
+            // Update button and container positions (in case layout changed)
+            const buttonPosition = this.getPosition()
+            const containerPosition = this.parent.getPosition()
+            gl.uniform2f(this.gl_refs.buttonPositionLoc, buttonPosition.x, buttonPosition.y)
+            gl.uniform2f(this.gl_refs.containerPositionLoc, containerPosition.x, containerPosition.y)
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6)
+          }
+
+          // Render every frame to keep sampling parent's live output
+          const animationLoop = () => {
+            render()
+            requestAnimationFrame(animationLoop)
+          }
+
+          animationLoop()
+
+          // Store render function for external calls
+          this.render = render
+        }
+      }
+    </script>
+
+    <!-- Usage -->
+    <script>
+      // Get demo layout containers from HTML
+      const helloRow = document.querySelector('#hello-row')
+      // const pillRow = document.querySelector('#pill-row');
+      const controlsRow = document.querySelector('#controls-row')
+      const containerRow = document.querySelector('#container-row')
+      const standaloneRow = document.querySelector('#standalone-row')
+
+      // Row 1: Hello button
+      const helloButton = new Button({
+        text: 'Hello 🍏',
+        size: '36',
+        type: 'rounded',
+        onClick: text => alert(`You clicked: ${text}`)
+      })
+      helloRow.appendChild(helloButton.element)
+
+      // // Row 2: Pill button (with warp enabled to show the difference)
+      // const pillButton = new Button({
+      //   text: "💊 Pill Shape Button",
+      //   size: "28",
+      //   type: "pill",
+      //   warp: false,
+      //   onClick: (text) => alert(`Pill button clicked: ${text}`)
+      // });
+      // pillRow.appendChild(pillButton.element);
+
+      // Row 3: Control buttons (play, record, next)
+      const playButton = new Button({
+        text: '▶',
+        size: '32',
+        type: 'circle',
+        onClick: text => alert(`Play clicked!`)
+      })
+
+      const recordButton = new Button({
+        text: '⏺',
+        size: '32',
+        type: 'circle',
+        onClick: text => alert(`Record clicked!`)
+      })
+
+      const nextButton = new Button({
+        text: '⏭',
+        size: '32',
+        type: 'circle',
+        onClick: text => alert(`Next clicked!`)
+      })
+
+      controlsRow.appendChild(playButton.element)
+      controlsRow.appendChild(recordButton.element)
+      controlsRow.appendChild(nextButton.element)
+
+      // Row 4: Container with nested glass buttons (pill shape)
+      const buttonContainer = new Container({
+        borderRadius: 24,
+        type: 'pill'
+      })
+
+      const button1 = new Button({
+        text: 'Click Me!',
+        size: '24',
+        type: 'pill',
+        onClick: text => alert(`Button pressed: ${text}`)
+      })
+
+      const button2 = new Button({
+        text: '✓',
+        size: '24',
+        type: 'circle',
+        onClick: text => alert(`Glass button clicked: ${text}`)
+      })
+
+      // Add buttons to container (sets up nested glass automatically)
+      buttonContainer.addChild(button1)
+      buttonContainer.addChild(button2)
+      containerRow.appendChild(buttonContainer.element)
+
+      // Row 5: Standalone button
+      const standaloneButton = new Button({
+        text: 'Standalone',
+        size: '24',
+        type: 'pill',
+        onClick: text => alert(`Standalone button: ${text}`)
+      })
+      standaloneRow.appendChild(standaloneButton.element)
+
+      // Glass Controls System
+      window.glassControls = {
+        edgeIntensity: 0.01,
+        rimIntensity: 0.05,
+        baseIntensity: 0.01,
+        edgeDistance: 0.15,
+        rimDistance: 0.8,
+        baseDistance: 0.1,
+        cornerBoost: 0.02,
+        rippleEffect: 0.1,
+        blurRadius: 5.0,
+        tintOpacity: 0.2,
+        warp: false,
+        hideButtons: false
+      }
+
+      // Update all glass instances with new parameters
+      function updateAllGlassInstances() {
+        Container.instances.forEach(instance => {
+          if (instance.gl_refs && instance.gl_refs.gl) {
+            const gl = instance.gl_refs.gl
+            gl.useProgram(gl.getParameter(gl.CURRENT_PROGRAM))
+
+            // Update blur radius
+            if (instance.gl_refs.blurRadiusLoc) {
+              gl.uniform1f(instance.gl_refs.blurRadiusLoc, window.glassControls.blurRadius)
+            }
+
+            // Update glass effect parameters
+            if (instance.gl_refs.edgeIntensityLoc) {
+              gl.uniform1f(instance.gl_refs.edgeIntensityLoc, window.glassControls.edgeIntensity)
+            }
+            if (instance.gl_refs.rimIntensityLoc) {
+              gl.uniform1f(instance.gl_refs.rimIntensityLoc, window.glassControls.rimIntensity)
+            }
+            if (instance.gl_refs.baseIntensityLoc) {
+              gl.uniform1f(instance.gl_refs.baseIntensityLoc, window.glassControls.baseIntensity)
+            }
+            if (instance.gl_refs.edgeDistanceLoc) {
+              gl.uniform1f(instance.gl_refs.edgeDistanceLoc, window.glassControls.edgeDistance)
+            }
+            if (instance.gl_refs.rimDistanceLoc) {
+              gl.uniform1f(instance.gl_refs.rimDistanceLoc, window.glassControls.rimDistance)
+            }
+            if (instance.gl_refs.baseDistanceLoc) {
+              gl.uniform1f(instance.gl_refs.baseDistanceLoc, window.glassControls.baseDistance)
+            }
+            if (instance.gl_refs.cornerBoostLoc) {
+              gl.uniform1f(instance.gl_refs.cornerBoostLoc, window.glassControls.cornerBoost)
+            }
+            if (instance.gl_refs.rippleEffectLoc) {
+              gl.uniform1f(instance.gl_refs.rippleEffectLoc, window.glassControls.rippleEffect)
+            }
+            if (instance.gl_refs.warpLoc) {
+              gl.uniform1f(instance.gl_refs.warpLoc, window.glassControls.warp ? 1.0 : 0.0)
+            }
+            if (instance.gl_refs.tintOpacityLoc) {
+              gl.uniform1f(instance.gl_refs.tintOpacityLoc, window.glassControls.tintOpacity)
+            }
+
+            // Force immediate re-render
+            if (instance.render) {
+              instance.render()
+            }
+          }
+        })
+      }
+
+      // Set up slider event listeners
+      function setupControlSliders() {
+        const sliders = [
+          { id: 'edgeIntensity', prop: 'edgeIntensity', valueId: 'edgeValue' },
+          { id: 'rimIntensity', prop: 'rimIntensity', valueId: 'rimValue' },
+          { id: 'baseIntensity', prop: 'baseIntensity', valueId: 'baseValue' },
+          { id: 'edgeDistance', prop: 'edgeDistance', valueId: 'edgeDistValue' },
+          { id: 'rimDistance', prop: 'rimDistance', valueId: 'rimDistValue' },
+          { id: 'baseDistance', prop: 'baseDistance', valueId: 'baseDistValue' },
+          { id: 'cornerBoost', prop: 'cornerBoost', valueId: 'cornerValue' },
+          { id: 'rippleEffect', prop: 'rippleEffect', valueId: 'rippleValue' },
+          { id: 'blurRadius', prop: 'blurRadius', valueId: 'blurValue' },
+          { id: 'tintOpacity', prop: 'tintOpacity', valueId: 'tintValue' }
+        ]
+
+        sliders.forEach(({ id, prop, valueId }) => {
+          const slider = document.getElementById(id)
+          const valueDisplay = document.getElementById(valueId)
+
+          if (slider && valueDisplay) {
+            slider.addEventListener('input', e => {
+              const value = parseFloat(e.target.value)
+              window.glassControls[prop] = value
+              valueDisplay.textContent = value.toFixed(3)
+              updateAllGlassInstances()
+            })
+          }
+        })
+
+        // Set up warp toggle checkbox
+        const warpToggle = document.getElementById('warpToggle')
+        if (warpToggle) {
+          warpToggle.addEventListener('change', e => {
+            window.glassControls.warp = e.target.checked
+            updateAllGlassInstances()
+          })
+        }
+
+        // Set up hide buttons toggle checkbox
+        const hideButtonsToggle = document.getElementById('hideButtonsToggle')
+        if (hideButtonsToggle) {
+          hideButtonsToggle.addEventListener('change', e => {
+            window.glassControls.hideButtons = e.target.checked
+            toggleButtonsVisibility()
+          })
+        }
+      }
+
+      // Function to toggle visibility of all glass buttons/containers
+      function toggleButtonsVisibility() {
+        const demoLayout = document.getElementById('demo-layout')
+        if (demoLayout) {
+          demoLayout.style.display = window.glassControls.hideButtons ? 'none' : 'flex'
+        }
+      }
+
+      // Create glass container for controls panel
+      const controlsContainer = new Container({
+        borderRadius: 12,
+        type: 'rounded'
+      })
+
+      // Position the glass container
+      const controlsWrapper = document.getElementById('glass-controls-container')
+      controlsWrapper.innerHTML = '' // Clear existing content
+      controlsWrapper.appendChild(controlsContainer.element)
+
+      // Create content overlay div (positioned on top of glass canvas)
+      const contentOverlay = document.createElement('div')
+      contentOverlay.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px;
+      z-index: 1;
+      pointer-events: auto;
+      width: 300px;
+      box-sizing: border-box;
+    `
+
+      contentOverlay.innerHTML = `
+      <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600; color: #222; text-align: center;">🍎 Liquid Glass Controls</h3>
+      
+      <div class="control-group">
+        <label>Edge Intensity <span class="control-value" id="edgeValue">0.01</span></label>
+        <input type="range" id="edgeIntensity" min="0" max="0.1" step="0.001" value="0.01">
+      </div>
+      
+      <div class="control-group">
+        <label>Rim Intensity <span class="control-value" id="rimValue">0.05</span></label>
+        <input type="range" id="rimIntensity" min="0" max="0.2" step="0.001" value="0.05">
+      </div>
+      
+      <div class="control-group">
+        <label>Base Intensity <span class="control-value" id="baseValue">0.01</span></label>
+        <input type="range" id="baseIntensity" min="0" max="0.05" step="0.001" value="0.01">
+      </div>
+      
+      <div class="control-group">
+        <label>Edge Distance <span class="control-value" id="edgeDistValue">0.15</span></label>
+        <input type="range" id="edgeDistance" min="0.05" max="0.5" step="0.01" value="0.15">
+      </div>
+      
+      <div class="control-group">
+        <label>Rim Distance <span class="control-value" id="rimDistValue">0.8</span></label>
+        <input type="range" id="rimDistance" min="0.1" max="2.0" step="0.05" value="0.8">
+      </div>
+      
+      <div class="control-group">
+        <label>Base Distance <span class="control-value" id="baseDistValue">0.1</span></label>
+        <input type="range" id="baseDistance" min="0.05" max="0.3" step="0.01" value="0.1">
+      </div>
+      
+      <div class="control-group">
+        <label>Corner Boost <span class="control-value" id="cornerValue">0.02</span></label>
+        <input type="range" id="cornerBoost" min="0" max="0.1" step="0.001" value="0.02">
+      </div>
+      
+      <div class="control-group">
+        <label>Ripple Effect <span class="control-value" id="rippleValue">0.1</span></label>
+        <input type="range" id="rippleEffect" min="0" max="0.5" step="0.01" value="0.1">
+      </div>
+      
+      <div class="control-group">
+        <label>Blur Radius <span class="control-value" id="blurValue">5.0</span></label>
+        <input type="range" id="blurRadius" min="1" max="15" step="0.5" value="5.0">
+      </div>
+      
+      <div class="control-group">
+        <label>Tint Opacity <span class="control-value" id="tintValue">0.2</span></label>
+        <input type="range" id="tintOpacity" min="0" max="1.0" step="0.01" value="0.2">
+      </div>
+      
+      <div class="control-group">
+        <label>
+          <input type="checkbox" id="warpToggle"> Enable Center Warp
+        </label>
+      </div>
+      
+      <div class="control-group">
+        <label>
+          <input type="checkbox" id="hideButtonsToggle"> Hide All Buttons
+        </label>
+      </div>
+    `
+
+      // Append content overlay to the glass container (on top of canvas)
+      controlsContainer.element.appendChild(contentOverlay)
+
+      // Force the container to update its size based on CSS
+      setTimeout(() => {
+        controlsContainer.updateSizeFromDOM()
+      }, 100)
+
+              // Initialize controls when page loads
+        setupControlSliders()
+
+        // Handle window resize - recapture page snapshot and update all glass instances
+        let resizeTimeout
+        window.addEventListener('resize', () => {
+          // Debounce resize events to avoid excessive recapturing
+          clearTimeout(resizeTimeout)
+          resizeTimeout = setTimeout(() => {
+            console.log('Window resized, recapturing page snapshot...')
+            
+            // Reset snapshot state
+            Container.pageSnapshot = null
+            Container.isCapturing = true
+            Container.waitingForSnapshot = Container.instances.slice() // All instances need update
+            
+            // Recapture page snapshot
+            html2canvas(document.body, {
+              scale: 1,
+              useCORS: true,
+              allowTaint: true,
+              backgroundColor: null,
+              ignoreElements: function (element) {
+                // Ignore all glass elements
+                return (
+                  element.classList.contains('glass-container') ||
+                  element.classList.contains('glass-button') ||
+                  element.classList.contains('glass-button-text')
+                )
+              }
+            })
+              .then(snapshot => {
+                console.log('Page snapshot recaptured after resize')
+                Container.pageSnapshot = snapshot
+                Container.isCapturing = false
+                
+                                 // Create new image and update all glass instances
+                 const img = new Image()
+                 img.src = snapshot.toDataURL()
+                 img.onload = () => {
+                   Container.instances.forEach(instance => {
+                     if (instance.gl_refs && instance.gl_refs.gl) {
+                       // Check if this is a nested glass button
+                       if (instance instanceof Button && instance.parent && instance.isNestedGlass) {
+                         // For nested glass buttons, reinitialize their texture to match parent's new size
+                         const gl = instance.gl_refs.gl
+                         const containerCanvas = instance.parent.canvas
+                         
+                         // Resize the button's texture to match new container canvas size
+                         gl.bindTexture(gl.TEXTURE_2D, instance.gl_refs.texture)
+                         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, containerCanvas.width, containerCanvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
+                         
+                         // Update texture size uniform to new container dimensions
+                         gl.uniform2f(instance.gl_refs.textureSizeLoc, containerCanvas.width, containerCanvas.height)
+                         
+                         // Update container size uniform for sampling calculations
+                         if (instance.gl_refs.containerSizeLoc) {
+                           gl.uniform2f(instance.gl_refs.containerSizeLoc, instance.parent.width, instance.parent.height)
+                         }
+                         
+                         console.log(`Updated nested button texture: ${containerCanvas.width}x${containerCanvas.height}`)
+                       } else {
+                         // For standalone glass elements, update with new page snapshot
+                         const gl = instance.gl_refs.gl
+                         gl.bindTexture(gl.TEXTURE_2D, instance.gl_refs.texture)
+                         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
+                         
+                         // Update texture size uniform
+                         gl.uniform2f(instance.gl_refs.textureSizeLoc, img.width, img.height)
+                       }
+                       
+                       // Force re-render for all instances
+                       if (instance.render) {
+                         instance.render()
+                       }
+                     }
+                   })
+                 }
+                
+                // Clear waiting queue
+                Container.waitingForSnapshot = []
+              })
+              .catch(error => {
+                console.error('html2canvas error on resize:', error)
+                Container.isCapturing = false
+                Container.waitingForSnapshot = []
+              })
+          }, 300) // 300ms debounce delay
+        })
+      </script>
+    </body>
+    </html>

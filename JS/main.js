@@ -4,14 +4,8 @@ let currentIndex = 1;
 let isAppOpen = false;
 const gap = 32; 
 
-function getSlideWidth() {
-  return document.querySelector('.slide').getBoundingClientRect().width;
-}
-
-
-function getSlideStep() {
-  return getSlideWidth() + gap;
-}
+function getSlideWidth() {return document.querySelector('.slide').getBoundingClientRect().width}
+function getSlideStep() {return getSlideWidth() + gap;}
 
 function updateSlidePosition() {
   const slideWidth = getSlideWidth();
@@ -153,7 +147,13 @@ icons.forEach(icon => {
 function triggerBounce(el) {
   el.classList.remove("bounce");
   void el.offsetWidth;
-  el.classList.add("bounce");
+  setTimeout(() => {
+    
+    el.classList.add("bounce");
+    setTimeout(() => {
+      el.classList.remove("bounce");
+    }, 600);  
+  }, 0);
 }
 
 function closeAppWindow(bclassName) {
@@ -215,12 +215,11 @@ window.addEventListener('load', () => {
       setTimeout(() => {
         loader.remove();
 
-        // Animate the app icons in sequence
         const apps = document.querySelectorAll('.app-icon');
         apps.forEach((app, i) => {
           setTimeout(() => {
             app.classList.add('active');
-          }, i * 10); // stagger by 10ms each
+          }, i * 30);
         });
 
       }, 1000);
