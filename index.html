@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="CSS/verify.css">
     <title>Master Controls</title>
 </head>
 <body class="bg-[#0a0a0a] text-cyan-400 select-none overflow-hidden flex flex-col items-center justify-center min-h-screen relative">
@@ -25,7 +26,7 @@
                 <div class="liquidGlass-tint"></div>
                 <div class="liquidGlass-shine"></div>
                 <div class="liquidGlass-context w-full h-full p-6 relative">
-                    <div class="absolute top-5 left-1/2 -translate-x-1/2 font-bold text-2xl" id="UserSlide">Users</div>
+                    <div class="absolute top-5 left-1/2 transform -translate-x-1/2  font-bold text-2xl" id="UserSlide">Users</div>
                     <div class="mt-14 grid grid-cols-1 gap-3 text-sm text-cyan-200/90">
                         <div class="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 border border-white/10">
                         <span>Active Users</span><span class="text-white font-semibold">1,284</span>
@@ -131,15 +132,22 @@
     </div>
 
     <div class="app-window verify">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
-            <button class="close-cross verify absolute top-3 right-3 text-xl">✖</button>
-            <h2 class="text-2xl font-bold">Verify</h2>
-            <p class="mt-4">This is your app content area 🚀</p>
+        <div class="app-container">
+            <button class="close-cross verify absolute top-[-5vh] left-[-2vw] text-xl w-[40px] h-[40px] rounded-full">✖</button>
+            <h2 class="text-2xl font-bold absolute top-[-5vh] left-1/2 transform -translate-x-1/2 ">Verify</h2>
+            <div class="content-scroll verify">
+                <div class="content-item main verify">
+                    <div class="item-name">verify</div>
+                    <div class="main-toggle verify" id="verifyToggle"></div>
+                </div>
+                <div class="content-item verify"></div>
+                <div class="content-item verify"></div>
+            </div>
         </div>
     </div>
 
     <div class="app-window auto-response">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross auto-response absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Auto Response</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -147,7 +155,7 @@
     </div>
 
     <div class="app-window database">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross database absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Database</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -155,7 +163,7 @@
     </div>
 
     <div class="app-window broadcast">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross broadcast absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Broadcast</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -163,7 +171,7 @@
     </div>
 
     <div class="app-window groups">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross groups absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Groups</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -171,7 +179,7 @@
     </div>
 
     <div class="app-window channels">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross channels absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Channels</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -179,7 +187,7 @@
     </div>
 
     <div class="app-window requests">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross requests absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Requests</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -187,7 +195,7 @@
     </div>
 
     <div class="app-window inbox">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross inbox absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">Inbox</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -195,7 +203,7 @@
     </div>
 
     <div class="app-window api-keys">
-        <div class="w-[80vw] h-[70vh] rounded-2xl p-6 text-white relative">
+        <div class="app-container">
             <button class="close-cross api-keys absolute top-3 right-3 text-xl">✖</button>
             <h2 class="text-2xl font-bold">API Keys</h2>
             <p class="mt-4">This is your app content area 🚀</p>
@@ -258,7 +266,9 @@
       </filter>
     </svg>
     <script src="JS/main.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="JS/verify.js"></script>
+    <script src="JS/tailwindcss.js"></script>
+
 </body>
 </html>
 

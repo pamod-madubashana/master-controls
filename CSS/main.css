@@ -1,8 +1,8 @@
-*{margin: 0;padding: 0;font-family: 'Segoe UI', sans-serif , 'poppins', 'Roboto', 'Helvetica Neue', Arial, sans-serif;transition: all 0.5s ease;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);}
-
 :root{
   --glass-radius: 22px;
 }
+
+*{margin: 0;padding: 0;font-family: 'Segoe UI', sans-serif , 'poppins', 'Roboto', 'Helvetica Neue', Arial, sans-serif;transition: all 0.5s ease;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);}
 body{background: #0a0a0a;}
 
 .bg-glow{position:fixed;inset:0;z-index:-1;pointer-events:none}
@@ -33,17 +33,16 @@ body{background: #0a0a0a;}
 
 .app-window {position: fixed;inset: 0;z-index: 200;display: none;}
 .app-window.active {display: flex;align-items: center;justify-content: center;}
+.app-container{position: relative;width: 80vw;height: 70vh;border-radius: 20px;color: white;}
 
-.nav-icon{
-  background: var(--icon);
-  background-size: cover;
-  background-repeat: no-repeat;
+.nav-icon{background: var(--icon);background-size: cover;background-repeat: no-repeat;transition: transform 0.4s ;}
+.nav-icon.disable{transform: translate(0,10vh);}
+.nav-icon #navIcons{
+  transform: scale(0.1);
 }
-
 @keyframes bounce { 
   0%   { transform: translateY(0); }
   30%  { transform: translateY(-50px); scale: 0.3;}
-  50%  { transform: translateY(2px);}
-  80%  { transform: translateY(-2px); }
+  60%  { transform: translateY(6px);}
   100% { transform: translateY(0); }
 }

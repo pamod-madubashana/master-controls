@@ -128,13 +128,14 @@ icons.forEach(icon => {
     document.body.appendChild(clone);
     icons.forEach(icon => icon.style.opacity = "0");
     clone.getBoundingClientRect();
-    clone.style.position = "fixed";
+    clone.style.position = "absolute";
     clone.style.top = "50%";
     clone.style.left = "50%";
     clone.style.transform = "translate(-50%, -50%)";
     
-    clone.style.width = "100vw";
-    clone.style.height = "100vh";
+    clone.style.width = "90vw";
+    clone.style.height = "90vh";
+    navIcons.forEach(icon => icon.classList.add('disable'));
 
     setTimeout(() => {
       const classString = [...icon.classList][1]; 
@@ -148,7 +149,7 @@ function triggerBounce(el) {
   el.classList.remove("bounce");
   void el.offsetWidth;
   setTimeout(() => {
-    
+    navIcons.forEach(icon => icon.classList.remove('disable'));
     el.classList.add("bounce");
     setTimeout(() => {
       el.classList.remove("bounce");
