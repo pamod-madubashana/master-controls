@@ -1,0 +1,7 @@
+.content-item.verify.group.active{
+    /* max-height: 40vh; */
+    height: 40vh;
+}
+.content-item.verify.private.active{
+    height: 40vh;
+}
